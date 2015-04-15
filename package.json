@@ -1,19 +1,82 @@
 {
   "name": "spectreport",
-  "version": "0.0.0",
-  "description": "A spec reporter for protractor/mocha that generates nice HTML reports.",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "A generator of beutiful HTML test reports",
+  "main": "./lib/spectreport.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp test",
+    "build": "gulp build",
+    "coverage": "gulp coverage"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/jj4th/spectreport.git"
   },
-  "author": "J.Andrichak",
+  "keywords": [
+    "mocha",
+    "spectreport",
+    "test"
+  ],
+  "author": "John J. Andrichak IV",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jj4th/spectreport/issues"
   },
-  "homepage": "https://github.com/jj4th/spectreport"
+  "homepage": "https://github.com/jj4th/spectreport",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "babel-core": "^5.8.24",
+    "babel-eslint": "^2.0.2",
+    "chai": "^2.1.2",
+    "del": "^1.1.1",
+    "eslint": "^0.17.0",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.2.1",
+    "gulp-concat": "^2.5.2",
+    "gulp-eslint": "^0.7.0",
+    "gulp-file": "^0.2.0",
+    "gulp-filter": "^2.0.2",
+    "gulp-istanbul": "^0.6.0",
+    "gulp-istanbul-enforcer": "^1.0.3",
+    "gulp-load-plugins": "^0.8.1",
+    "gulp-mocha": "^2.0.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-sourcemaps": "^1.5.0",
+    "gulp-uglify": "^1.2.0",
+    "isparta": "^2.2.0",
+    "mkdirp": "^0.5.0",
+    "mocha": "^2.2.1",
+    "proxyquire": "^1.4.0",
+    "rollup": "^0.15.0",
+    "sinon": "^1.14.1",
+    "sinon-as-promised": "^3.0.0",
+    "sinon-chai": "^2.7.0",
+    "webpack": "^1.8.11"
+  },
+  "taskConfig": {
+    "exportVarName": "spectreport",
+    "entryFileName": "src/index",
+    "assetSrc": "src/assets",
+    "assetDest": "lib/assets",
+    "mochaGlobals": [
+      "stub",
+      "spy",
+      "expect"
+    ]
+  },
+  "threshold": {
+    "statements": 100,
+    "branches": 100,
+    "lines": 100,
+    "functions": 100
+  },
+  "config": {
+    "loglevel": "silent"
+  },
+  "dependencies": {
+    "babel-runtime": "^5.8.24",
+    "dot": "^1.0.3",
+    "fs-extra": "^0.18.2"
+  }
 }

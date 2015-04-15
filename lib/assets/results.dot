@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <title>Report Test Results</title>
+    <!-- load MUI -->
+    <link href="https://cdn.muicss.com/mui-0.1.22-rc1/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.muicss.com/mui-0.1.22-rc1/js/mui.min.js"></script>
+    <style type="text/css">
+        div.test > div, div.suiteDetails > div {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 2em;
+        }
+        div.passed {
+            color: #66BB6A;
+        }
+        div.pending {
+            color: #29B6F6;
+        }
+        div.failed {
+            color: #FF7043;
+        }
+        span.failed {
+            font-weight: bold;
+            color: #FF7043;
+        }
+        div.suite, div.testList {
+            border-top: 1px dotted #B2DFDB;
+        }
+        div.testList {
+            background-color: #FAFAFA;
+        }
+        body {
+            background-color: #EEEEEE;
+        }
+        div.suiteHeaders {
+            color: white;
+            background-color: #26A69A;
+        }
+        div.testErr {
+            background-color: #FFFFFF;
+            color: black;
+            font-family: 'monospace';
+            font-size: 10px;
+            border: 1px dotted #BDBDBD;
+        }
+        div > .suiteList, div > .testList, div > .testErr {
+            display:none;
+        }
+        div.expanded > .suiteList, div.expanded > .testList, div.expanded > .testErr {
+            display:block;
+        }
+
+        div.suite, div.test {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<small>
+    <div id="reportTree" class="mui-panel mui-text-body1 expanded">
+        {{ function buildTest(test, indent) { }}
+        {{ var testClass = (test.status === 2 ? 'pending' : (test.status === 1 ? 'passed' : 'failed')); }}
+        <div class="mui-row test mui-text-caption {{=testClass}}">
+            <div class="testName mui-col-sm-6" style="text-indent:{{=indent}}px;" title="{{=test.title}}">
+                {{=test.title}}</div>
+            <div class="testDuration mui-col-sm-2">{{=(test.duration).toFixed(2)}}</div>
+            {{?test.status === 2}}
+            <div class="testStatus mui-col-sm-2 mui-col-sm-offset-2">-</div>
+            {{??test.status === 1}}
+            <div class="testStatus mui-col-sm-4">✔</div>
+            {{??}}
+            <div class="testStatus mui-col-sm-3 mui-col-sm-offset-1">✘</div>
+            {{?}}
+
+            {{ if (test.error && Object.keys(test.error).length > 0) { }}
+            <div class="testErr mui-col-sm-10 mui-col-sm-offset-1">
+                <pre>{{=test.error.stack.replace('<','&lt;')}}</pre>
+            </div>
+            {{ } }}
+
+        </div>
+        {{ } }}
+
+        {{ function buildSuite(suite, indent) { }}
+        {{ var passes = suite.stats.tests - suite.stats.failures - suite.stats.pending; }}
+        <div class="suite {{=(suite.stats.failures ? 'suiteFailed' : '' )}}">
+            <div class="suiteDetails mui-row mui-text-caption">
+                <div class="suiteName mui-col-sm-6 mui-text-body1" style="text-indent:{{=indent}}px;" title="{{=suite.title}}">
+                    <span class="failed"><big>{{=(suite.stats.failures ? '⚠' : '')}}</big></span>
+                    {{=suite.title}}</div>
+                <div class="suiteDuration mui-col-sm-2">{{=(suite.stats.duration).toFixed(2)}}</div>
+                <div class="suitePasses mui-col-sm-1 passed">{{=(passes ? passes : '')}}</div>
+                <div class="suiteFailures mui-col-sm-1 failed">{{=(suite.stats.failures ? suite.stats.failures : '')}}</div>
+                <div class="suitePending mui-col-sm-1 pending">{{=(suite.stats.pending ? suite.stats.pending : '')}}</div>
+                <div class="suiteTotal mui-col-sm-1">{{=suite.stats.tests}}</div>
+            </div>
+
+            {{ if (suite.tests.length > 0) { }}
+            <div class="testList">
+                {{~suite.tests :childTest:index}}
+                    {{ buildTest(childTest, indent+10); }}
+                {{~}}
+            </div>
+            {{ } }}
+
+            {{ if (suite.suites.length > 0) { }}
+            <div class="suiteList">
+                {{~suite.suites :childSuite:index}}
+                    {{ buildSuite(childSuite, indent+5); }}
+                {{~}}
+            </div>
+            {{ } }}
+
+        </div>
+        {{ } }}
+
+        <div class="suiteList">
+            <div class="suiteHeaders mui-row mui-text-title mui-z1">
+                <div class="suiteName mui-col-sm-6">Title</div>
+                <div class="suiteDuration mui-col-sm-2">Time(secs)</div>
+                <div class="suitePasses mui-col-sm-1">Pass</div>
+                <div class="suiteFailures mui-col-sm-1">Fail</div>
+                <div class="suitePending mui-col-sm-1">Pend</div>
+                <div class="suiteTotal mui-col-sm-1">Total</div>
+            </div>
+            {{ buildSuite(it, 0); }}
+        </div>
+    </div>
+</small>
+</body>
+<script type="text/javascript">
+    (function () {
+        var index = 0;
+        var suites = document.getElementsByClassName('suite');
+        var tests = document.getElementsByClassName('test');
+
+        var toggleExpanded = function(event) {
+            event = event || window.event;
+            var target = event.currentTarget || this;
+
+            target.classList.toggle('expanded');
+
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                event.cancelBubble = true;
+            }
+
+        };
+
+        for(index = 0; index < suites.length; index++) {
+            suites[index].addEventListener('click', toggleExpanded);
+            console.log(suites[index]);
+        }
+
+        for(index = 0; index < tests.length; index++) {
+            tests[index].addEventListener('click', toggleExpanded);
+        }
+    })();
+</script>
+</html>

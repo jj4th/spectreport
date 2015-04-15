@@ -1,0 +1,182 @@
+{
+  "title": "Database Instance Details Page - Right Aligned Actions",
+  "suites": [
+    {
+      "title": "Midway Tests",
+      "suites": [
+        {
+          "title": "Instance Databases Table:",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should be filterable by name @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests Instance Databases Table: should be filterable by name @dev",
+              "duration": 1.93,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 1,
+            "pending": 0,
+            "failures": 0,
+            "duration": 1.93,
+            "timeStart": 1442264876217,
+            "timeStop": 1442264878147
+          }
+        },
+        {
+          "title": "- Unsuccessful Instance Actions: ",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should throw restart instance error when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Unsuccessful Instance Actions:  should throw restart instance error when modal triggered and confirmed @dev",
+              "duration": 1.53,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should throw resize flavor error when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Unsuccessful Instance Actions:  should throw resize flavor error when modal triggered and confirmed @dev",
+              "duration": 1.67,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should throw resize volume error when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Unsuccessful Instance Actions:  should throw resize volume error when modal triggered and confirmed @dev",
+              "duration": 1.49,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should throw delete instance error when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Unsuccessful Instance Actions:  should throw delete instance error when modal triggered and confirmed @dev",
+              "duration": 1.28,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should throw create database error when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Unsuccessful Instance Actions:  should throw create database error when modal triggered and confirmed @dev",
+              "duration": 1.97,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should throw create user error when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Unsuccessful Instance Actions:  should throw create user error when modal triggered and confirmed @dev",
+              "duration": 3.4,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 6,
+            "pending": 0,
+            "failures": 0,
+            "duration": 11.34,
+            "timeStart": 1442264878147,
+            "timeStop": 1442264889491
+          }
+        },
+        {
+          "title": "- Successful Instance Actions: ",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should restart instance when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Successful Instance Actions:  should restart instance when modal triggered and confirmed @dev",
+              "duration": 1.73,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should resize instance when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Successful Instance Actions:  should resize instance when modal triggered and confirmed @dev",
+              "duration": 1.76,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should resize volume when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Successful Instance Actions:  should resize volume when modal triggered and confirmed @dev",
+              "duration": 1.69,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should delete instance when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Successful Instance Actions:  should delete instance when modal triggered and confirmed @dev",
+              "duration": 1.95,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should create database when modal triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Successful Instance Actions:  should create database when modal triggered and confirmed @dev",
+              "duration": 4.18,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should create a user when modal is triggered and confirmed @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Successful Instance Actions:  should create a user when modal is triggered and confirmed @dev",
+              "duration": 4.24,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 6,
+            "pending": 0,
+            "failures": 0,
+            "duration": 16.87,
+            "timeStart": 1442264889491,
+            "timeStop": 1442264906358
+          }
+        },
+        {
+          "title": "- Correct Error messages: ",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should show an error message when creating a User an no databases exist @dev",
+              "fullTitle": "Database Instance Details Page - Right Aligned Actions Midway Tests - Correct Error messages:  should show an error message when creating a User an no databases exist @dev",
+              "duration": 1.77,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 1,
+            "pending": 0,
+            "failures": 0,
+            "duration": 2.93,
+            "timeStart": 1442264906358,
+            "timeStop": 1442264909290
+          }
+        }
+      ],
+      "tests": [],
+      "stats": {
+        "tests": 14,
+        "pending": 0,
+        "failures": 0,
+        "duration": 33.07,
+        "timeStart": 1442264876217,
+        "timeStop": 1442264909290
+      }
+    }
+  ],
+  "tests": [],
+  "stats": {
+    "tests": 14,
+    "pending": 0,
+    "failures": 0,
+    "duration": 37.35,
+    "timeStart": 1442264871943,
+    "timeStop": 1442264909290
+  }
+}

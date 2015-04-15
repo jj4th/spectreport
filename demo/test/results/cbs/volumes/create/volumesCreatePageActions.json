@@ -1,0 +1,112 @@
+{
+  "title": "Block Storage Volumes - Create Actions",
+  "suites": [
+    {
+      "title": "Midway Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should allow you to create a volume @dev",
+          "fullTitle": "Block Storage Volumes - Create Actions Midway Tests should allow you to create a volume @dev",
+          "duration": 3.5,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should allow you to create a volume from snapshot @dev",
+          "fullTitle": "Block Storage Volumes - Create Actions Midway Tests should allow you to create a volume from snapshot @dev",
+          "duration": 5.77,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show error if volume creation failed @dev",
+          "fullTitle": "Block Storage Volumes - Create Actions Midway Tests should show error if volume creation failed @dev",
+          "duration": 3.39,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 3,
+        "pending": 0,
+        "failures": 0,
+        "duration": 16.89,
+        "timeStart": 1442264446372,
+        "timeStop": 1442264463261
+      }
+    },
+    {
+      "title": "Smoke Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should not allow create without Volume Name populated",
+          "fullTitle": "Block Storage Volumes - Create Actions Smoke Tests should not allow create without Volume Name populated",
+          "duration": 3.04,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should not allow create without Volume Size populated",
+          "fullTitle": "Block Storage Volumes - Create Actions Smoke Tests should not allow create without Volume Size populated",
+          "duration": 3.32,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should allow create for valid SSD volume size",
+          "fullTitle": "Block Storage Volumes - Create Actions Smoke Tests should allow create for valid SSD volume size",
+          "duration": 5.99,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should allow create for valid SATA volume size",
+          "fullTitle": "Block Storage Volumes - Create Actions Smoke Tests should allow create for valid SATA volume size",
+          "duration": 4.63,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should not allow create for invalid SSD volume size",
+          "fullTitle": "Block Storage Volumes - Create Actions Smoke Tests should not allow create for invalid SSD volume size",
+          "duration": 5.06,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should not allow create for invalid SATA volume size",
+          "fullTitle": "Block Storage Volumes - Create Actions Smoke Tests should not allow create for invalid SATA volume size",
+          "duration": 5.41,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should allow you to cancel out of Volume Create",
+          "fullTitle": "Block Storage Volumes - Create Actions Smoke Tests should allow you to cancel out of Volume Create",
+          "duration": 2.05,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 7,
+        "pending": 0,
+        "failures": 0,
+        "duration": 37.94,
+        "timeStart": 1442264463261,
+        "timeStop": 1442264501203
+      }
+    }
+  ],
+  "tests": [],
+  "stats": {
+    "tests": 10,
+    "pending": 0,
+    "failures": 0,
+    "duration": 54.83,
+    "timeStart": 1442264446371,
+    "timeStop": 1442264501203
+  }
+}

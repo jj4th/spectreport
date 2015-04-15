@@ -1,0 +1,140 @@
+{
+  "title": "Block Storage snapshots - Details Layout",
+  "suites": [
+    {
+      "title": "Common Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should be at the correct URL",
+          "fullTitle": "Block Storage snapshots - Details Layout Common Tests should be at the correct URL",
+          "duration": 1.34,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have correct breadcrumbs",
+          "fullTitle": "Block Storage snapshots - Details Layout Common Tests should have correct breadcrumbs",
+          "duration": 0.62,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have page title",
+          "fullTitle": "Block Storage snapshots - Details Layout Common Tests should have page title",
+          "duration": 0.17,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have page subtitle",
+          "fullTitle": "Block Storage snapshots - Details Layout Common Tests should have page subtitle",
+          "duration": 0.16,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show user products sidebar",
+          "fullTitle": "Block Storage snapshots - Details Layout Common Tests should show user products sidebar",
+          "duration": 0.16,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show user details sidebar",
+          "fullTitle": "Block Storage snapshots - Details Layout Common Tests should show user details sidebar",
+          "duration": 0.15,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show \"Go to Reach Snapshots\" Link",
+          "fullTitle": "Block Storage snapshots - Details Layout Common Tests should show \"Go to Reach Snapshots\" Link",
+          "duration": 0.18,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show Account Info Banner",
+          "fullTitle": "Block Storage snapshots - Details Layout Common Tests should show Account Info Banner",
+          "duration": 0.15,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 8,
+        "pending": 0,
+        "failures": 0,
+        "duration": 2.95,
+        "timeStart": 1442264429858,
+        "timeStop": 1442264432812
+      }
+    },
+    {
+      "title": "Smoke Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should take you back to the snapshotss page using the breadcrumbs",
+          "fullTitle": "Block Storage snapshots - Details Layout Smoke Tests should take you back to the snapshotss page using the breadcrumbs",
+          "duration": 2.55,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 1,
+        "pending": 0,
+        "failures": 0,
+        "duration": 2.56,
+        "timeStart": 1442264432812,
+        "timeStop": 1442264435367
+      }
+    },
+    {
+      "title": "Midway Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should list correct snapshot details @dev",
+          "fullTitle": "Block Storage snapshots - Details Layout Midway Tests should list correct snapshot details @dev",
+          "duration": 2.22,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should list N/A for empty snapshot details @dev",
+          "fullTitle": "Block Storage snapshots - Details Layout Midway Tests should list N/A for empty snapshot details @dev",
+          "duration": 2.24,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show error message if no snapshot found @dev",
+          "fullTitle": "Block Storage snapshots - Details Layout Midway Tests should show error message if no snapshot found @dev",
+          "duration": 2.14,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 3,
+        "pending": 0,
+        "failures": 0,
+        "duration": 6.59,
+        "timeStart": 1442264435367,
+        "timeStop": 1442264441961
+      }
+    }
+  ],
+  "tests": [],
+  "stats": {
+    "tests": 12,
+    "pending": 0,
+    "failures": 0,
+    "duration": 13.93,
+    "timeStart": 1442264428036,
+    "timeStop": 1442264441961
+  }
+}

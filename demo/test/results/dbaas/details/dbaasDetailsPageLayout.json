@@ -1,0 +1,584 @@
+{
+  "title": "Database Instance Details Page - Page Layout",
+  "suites": [
+    {
+      "title": "Common Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should have page title",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should have page title",
+          "duration": 1.2,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have correct breadcrumbs",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should have correct breadcrumbs",
+          "duration": 0.51,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show databases table",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show databases table",
+          "duration": 0.16,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show filter for databases table",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show filter for databases table",
+          "duration": 0.21,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show \"Create Database\" link above Databases table",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show \"Create Database\" link above Databases table",
+          "duration": 0.17,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show \"Create Users\" link above Users table",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show \"Create Users\" link above Users table",
+          "duration": 0.16,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show users table",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show users table",
+          "duration": 0.19,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show filter for users table",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show filter for users table",
+          "duration": 0.24,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show action \"Restart Instance\"",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show action \"Restart Instance\"",
+          "duration": 0.17,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show action \"Resize Flavor\"",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show action \"Resize Flavor\"",
+          "duration": 0.19,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show action \"Resize Volume\"",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show action \"Resize Volume\"",
+          "duration": 0.17,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show action \"Delete Instance\"",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show action \"Delete Instance\"",
+          "duration": 0.16,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show Account Info Banner",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should show Account Info Banner",
+          "duration": 0.17,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have Databases for label above databases table",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should have Databases for label above databases table",
+          "duration": 0.16,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have Users for label above users table",
+          "fullTitle": "Database Instance Details Page - Page Layout Common Tests should have Users for label above users table",
+          "duration": 0.17,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 15,
+        "pending": 0,
+        "failures": 0,
+        "duration": 4.04,
+        "timeStart": 1442264908423,
+        "timeStop": 1442264912458
+      }
+    },
+    {
+      "title": "Midway Tests",
+      "suites": [
+        {
+          "title": "Database Instance Detail - Midways",
+          "suites": [
+            {
+              "title": "Instance Databases Table:",
+              "suites": [],
+              "tests": [
+                {
+                  "status": 1,
+                  "title": "should be filterable by name @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways Instance Databases Table: should be filterable by name @dev",
+                  "duration": 2.27,
+                  "error": null
+                }
+              ],
+              "stats": {
+                "tests": 1,
+                "pending": 0,
+                "failures": 0,
+                "duration": 2.27,
+                "timeStart": 1442264917393,
+                "timeStop": 1442264919665
+              }
+            },
+            {
+              "title": "- Unsuccessful Instance Actions: ",
+              "suites": [],
+              "tests": [
+                {
+                  "status": 1,
+                  "title": "should throw restart instance error when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Unsuccessful Instance Actions:  should throw restart instance error when modal triggered and confirmed @dev",
+                  "duration": 1.62,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should throw resize flavor error when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Unsuccessful Instance Actions:  should throw resize flavor error when modal triggered and confirmed @dev",
+                  "duration": 2.3,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should throw resize volume error when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Unsuccessful Instance Actions:  should throw resize volume error when modal triggered and confirmed @dev",
+                  "duration": 2.15,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should throw delete instance error when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Unsuccessful Instance Actions:  should throw delete instance error when modal triggered and confirmed @dev",
+                  "duration": 1.87,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should throw create e error when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Unsuccessful Instance Actions:  should throw create e error when modal triggered and confirmed @dev",
+                  "duration": 2.78,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should throw create user error when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Unsuccessful Instance Actions:  should throw create user error when modal triggered and confirmed @dev",
+                  "duration": 4.38,
+                  "error": null
+                }
+              ],
+              "stats": {
+                "tests": 6,
+                "pending": 0,
+                "failures": 0,
+                "duration": 15.1,
+                "timeStart": 1442264919665,
+                "timeStop": 1442264934762
+              }
+            },
+            {
+              "title": "- Successful Instance Actions: ",
+              "suites": [],
+              "tests": [
+                {
+                  "status": 1,
+                  "title": "should restart instance when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Successful Instance Actions:  should restart instance when modal triggered and confirmed @dev",
+                  "duration": 1.78,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should resize instance when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Successful Instance Actions:  should resize instance when modal triggered and confirmed @dev",
+                  "duration": 1.86,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should resize volume when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Successful Instance Actions:  should resize volume when modal triggered and confirmed @dev",
+                  "duration": 1.78,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should delete instance when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Successful Instance Actions:  should delete instance when modal triggered and confirmed @dev",
+                  "duration": 1.6,
+                  "error": null
+                }
+              ],
+              "stats": {
+                "tests": 4,
+                "pending": 0,
+                "failures": 0,
+                "duration": 8.44,
+                "timeStart": 1442264934762,
+                "timeStop": 1442264943206
+              }
+            },
+            {
+              "title": "- Modal/User Instance Actions",
+              "suites": [],
+              "tests": [
+                {
+                  "status": 1,
+                  "title": "should create database when modal triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Modal/User Instance Actions should create database when modal triggered and confirmed @dev",
+                  "duration": 3.04,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should create a user when modal is triggered and confirmed @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Modal/User Instance Actions should create a user when modal is triggered and confirmed @dev",
+                  "duration": 4.87,
+                  "error": null
+                }
+              ],
+              "stats": {
+                "tests": 2,
+                "pending": 0,
+                "failures": 0,
+                "duration": 9.45,
+                "timeStart": 1442264943206,
+                "timeStop": 1442264952656
+              }
+            },
+            {
+              "title": "- Correct Error messages: ",
+              "suites": [],
+              "tests": [
+                {
+                  "status": 1,
+                  "title": "should show an error message when creating a User an no databases exist @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Correct Error messages:  should show an error message when creating a User an no databases exist @dev",
+                  "duration": 1.88,
+                  "error": null
+                }
+              ],
+              "stats": {
+                "tests": 1,
+                "pending": 0,
+                "failures": 0,
+                "duration": 3.32,
+                "timeStart": 1442264952656,
+                "timeStop": 1442264955978
+              }
+            },
+            {
+              "title": "- Database instance that has null values ",
+              "suites": [],
+              "tests": [
+                {
+                  "status": 1,
+                  "title": "should display N/A when the value is null @dev",
+                  "fullTitle": "Database Instance Details Page - Page Layout Midway Tests Database Instance Detail - Midways - Database instance that has null values  should display N/A when the value is null @dev",
+                  "duration": 1.81,
+                  "error": null
+                }
+              ],
+              "stats": {
+                "tests": 1,
+                "pending": 0,
+                "failures": 0,
+                "duration": 3.04,
+                "timeStart": 1442264955978,
+                "timeStop": 1442264959020
+              }
+            }
+          ],
+          "tests": [],
+          "stats": {
+            "tests": 15,
+            "pending": 0,
+            "failures": 0,
+            "duration": 42.63,
+            "timeStart": 1442264916394,
+            "timeStop": 1442264959020
+          }
+        }
+      ],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should take you back to the instance list page using the breadcrumbs @dev",
+          "fullTitle": "Database Instance Details Page - Page Layout Midway Tests should take you back to the instance list page using the breadcrumbs @dev",
+          "duration": 2.14,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should list correct instance details @dev",
+          "fullTitle": "Database Instance Details Page - Page Layout Midway Tests should list correct instance details @dev",
+          "duration": 1.4,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should list instance databases @dev",
+          "fullTitle": "Database Instance Details Page - Page Layout Midway Tests should list instance databases @dev",
+          "duration": 0.39,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 18,
+        "pending": 0,
+        "failures": 0,
+        "duration": 46.56,
+        "timeStart": 1442264912458,
+        "timeStop": 1442264959020
+      }
+    },
+    {
+      "title": "Smoke Tests",
+      "suites": [
+        {
+          "title": "Create Database modal",
+          "suites": [
+            {
+              "title": "Common Tests",
+              "suites": [],
+              "tests": [
+                {
+                  "status": 1,
+                  "title": "should show the Database Name label",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create Database modal Common Tests should show the Database Name label",
+                  "duration": 0.37,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Character Set label",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create Database modal Common Tests should show the Character Set label",
+                  "duration": 0.37,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Collation label",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create Database modal Common Tests should show the Collation label",
+                  "duration": 0.37,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Database Name field",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create Database modal Common Tests should show the Database Name field",
+                  "duration": 0.36,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Character Set field",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create Database modal Common Tests should show the Character Set field",
+                  "duration": 0.38,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Collation field",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create Database modal Common Tests should show the Collation field",
+                  "duration": 0.35,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should have Create Database for modal title",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create Database modal Common Tests should have Create Database for modal title",
+                  "duration": 0.4,
+                  "error": null
+                }
+              ],
+              "stats": {
+                "tests": 7,
+                "pending": 0,
+                "failures": 0,
+                "duration": 2.6,
+                "timeStart": 1442264964629,
+                "timeStop": 1442264967230
+              }
+            }
+          ],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should have the the name of the instance as a subtitle",
+              "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create Database modal should have the the name of the instance as a subtitle",
+              "duration": 0.61,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 8,
+            "pending": 0,
+            "failures": 0,
+            "duration": 6.45,
+            "timeStart": 1442264961196,
+            "timeStop": 1442264967645
+          }
+        },
+        {
+          "title": "Create User modal",
+          "suites": [
+            {
+              "title": "Common Tests",
+              "suites": [],
+              "tests": [
+                {
+                  "status": 1,
+                  "title": "should show the Username label",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should show the Username label",
+                  "duration": 0.57,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Password label",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should show the Password label",
+                  "duration": 0.49,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Host label",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should show the Host label",
+                  "duration": 0.41,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Database label",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should show the Database label",
+                  "duration": 0.41,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Username field",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should show the Username field",
+                  "duration": 0.38,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Password field",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should show the Password field",
+                  "duration": 0.39,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Host field",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should show the Host field",
+                  "duration": 0.38,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should show the Database table",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should show the Database table",
+                  "duration": 0.4,
+                  "error": null
+                },
+                {
+                  "status": 1,
+                  "title": "should have Create User for modal title",
+                  "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests Create User modal Common Tests should have Create User for modal title",
+                  "duration": 0.38,
+                  "error": null
+                }
+              ],
+              "stats": {
+                "tests": 9,
+                "pending": 0,
+                "failures": 0,
+                "duration": 3.82,
+                "timeStart": 1442264970174,
+                "timeStop": 1442264973993
+              }
+            }
+          ],
+          "tests": [],
+          "stats": {
+            "tests": 9,
+            "pending": 0,
+            "failures": 0,
+            "duration": 7.01,
+            "timeStart": 1442264967645,
+            "timeStop": 1442264974658
+          }
+        }
+      ],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should have proper labels on instance table",
+          "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests should have proper labels on instance table",
+          "duration": 1.18,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have proper headers on the Database table",
+          "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests should have proper headers on the Database table",
+          "duration": 0.44,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have proper headers on the Users table",
+          "fullTitle": "Database Instance Details Page - Page Layout Smoke Tests should have proper headers on the Users table",
+          "duration": 0.56,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 20,
+        "pending": 0,
+        "failures": 0,
+        "duration": 15.64,
+        "timeStart": 1442264959021,
+        "timeStop": 1442264974658
+      }
+    }
+  ],
+  "tests": [],
+  "stats": {
+    "tests": 53,
+    "pending": 0,
+    "failures": 0,
+    "duration": 68.05,
+    "timeStart": 1442264906605,
+    "timeStop": 1442264974658
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "title": "Block Storage Snapshots - Overview Actions",
+  "suites": [
+    {
+      "title": "Midway Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should allow you to create from a snapshot @dev",
+          "fullTitle": "Block Storage Snapshots - Overview Actions Midway Tests should allow you to create from a snapshot @dev",
+          "duration": 5.17,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 1,
+        "pending": 0,
+        "failures": 0,
+        "duration": 6.96,
+        "timeStart": 1442264437589,
+        "timeStop": 1442264444548
+      }
+    }
+  ],
+  "tests": [],
+  "stats": {
+    "tests": 1,
+    "pending": 0,
+    "failures": 0,
+    "duration": 6.96,
+    "timeStart": 1442264437588,
+    "timeStop": 1442264444548
+  }
+}
