@@ -1,0 +1,231 @@
+{
+  "title": "Database Instances Page - Page Layout",
+  "suites": [
+    {
+      "title": "Common Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should be at the correct URL",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be at the correct URL",
+          "duration": 0.08,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have correct breadcrumbs",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should have correct breadcrumbs",
+          "duration": 0.52,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have page title",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should have page title",
+          "duration": 0.17,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have floating header on table",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should have floating header on table",
+          "duration": 0.18,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Status\" ascending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Status\" ascending",
+          "duration": 1.83,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Status\" descending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Status\" descending",
+          "duration": 1.88,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Name\" ascending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Name\" ascending",
+          "duration": 1.96,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Name\" descending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Name\" descending",
+          "duration": 1.93,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Instance ID\" ascending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Instance ID\" ascending",
+          "duration": 1.95,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Instance ID\" descending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Instance ID\" descending",
+          "duration": 1.96,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Volume Size\" ascending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Volume Size\" ascending",
+          "duration": 1.92,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Volume Size\" descending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Volume Size\" descending",
+          "duration": 1.96,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"RAM\" ascending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"RAM\" ascending",
+          "duration": 1.95,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"RAM\" descending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"RAM\" descending",
+          "duration": 1.91,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Region\" ascending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Region\" ascending",
+          "duration": 1.9,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should be sortable by \"Region\" descending",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should be sortable by \"Region\" descending",
+          "duration": 1.88,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show the instances table",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should show the instances table",
+          "duration": 0.16,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show \"Create New Instance\" Link",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should show \"Create New Instance\" Link",
+          "duration": 0.17,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show \"Go to Reach Databases\" Link",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should show \"Go to Reach Databases\" Link",
+          "duration": 0.16,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should show Account Info Banner",
+          "fullTitle": "Database Instances Page - Page Layout Common Tests should show Account Info Banner",
+          "duration": 0.16,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 20,
+        "pending": 0,
+        "failures": 0,
+        "duration": 26.1,
+        "timeStart": 1442264978173,
+        "timeStop": 1442265004276
+      }
+    },
+    {
+      "title": "Midway Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should have the expected data for the selected instance @dev",
+          "fullTitle": "Database Instances Page - Page Layout Midway Tests should have the expected data for the selected instance @dev",
+          "duration": 1.44,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have the N/A data for the selected instance with blank/null values @dev",
+          "fullTitle": "Database Instances Page - Page Layout Midway Tests should have the N/A data for the selected instance with blank/null values @dev",
+          "duration": 3.58,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 2,
+        "pending": 0,
+        "failures": 0,
+        "duration": 6.46,
+        "timeStart": 1442265004276,
+        "timeStop": 1442265010735
+      }
+    },
+    {
+      "title": "Smoke Tests",
+      "suites": [],
+      "tests": [
+        {
+          "status": 1,
+          "title": "should take you back to the instances page using the breadcrumbs",
+          "fullTitle": "Database Instances Page - Page Layout Smoke Tests should take you back to the instances page using the breadcrumbs",
+          "duration": 1.92,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should have correct headers for Instances table",
+          "fullTitle": "Database Instances Page - Page Layout Smoke Tests should have correct headers for Instances table",
+          "duration": 1.25,
+          "error": null
+        },
+        {
+          "status": 1,
+          "title": "should link to a DB Instance on the table",
+          "fullTitle": "Database Instances Page - Page Layout Smoke Tests should link to a DB Instance on the table",
+          "duration": 3.69,
+          "error": null
+        }
+      ],
+      "stats": {
+        "tests": 3,
+        "pending": 0,
+        "failures": 0,
+        "duration": 6.87,
+        "timeStart": 1442265010735,
+        "timeStop": 1442265017605
+      }
+    }
+  ],
+  "tests": [],
+  "stats": {
+    "tests": 25,
+    "pending": 0,
+    "failures": 0,
+    "duration": 41.01,
+    "timeStart": 1442264976598,
+    "timeStop": 1442265017605
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "title": "Database Instance Details Page - Users Table Actions",
+  "suites": [
+    {
+      "title": "Midway Tests",
+      "suites": [
+        {
+          "title": "Instance Users Table:",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should list instance users @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests Instance Users Table: should list instance users @dev",
+              "duration": 1.05,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should be filterable by name @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests Instance Users Table: should be filterable by name @dev",
+              "duration": 1.48,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 2,
+            "pending": 0,
+            "failures": 0,
+            "duration": 3.71,
+            "timeStart": 1442264915260,
+            "timeStop": 1442264918967
+          }
+        },
+        {
+          "title": "User deletion",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should delete testuser @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests User deletion should delete testuser @dev",
+              "duration": 4.1,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should fail to delete foouser @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests User deletion should fail to delete foouser @dev",
+              "duration": 3.64,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should show username in delete modal @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests User deletion should show username in delete modal @dev",
+              "duration": 3.2,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 3,
+            "pending": 0,
+            "failures": 0,
+            "duration": 11.94,
+            "timeStart": 1442264918967,
+            "timeStop": 1442264930910
+          }
+        },
+        {
+          "title": "User edit",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should edit testuser @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests User edit should edit testuser @dev",
+              "duration": 4.65,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should fail to edit foouser @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests User edit should fail to edit foouser @dev",
+              "duration": 4.14,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 2,
+            "pending": 0,
+            "failures": 0,
+            "duration": 9.88,
+            "timeStart": 1442264930910,
+            "timeStop": 1442264940792
+          }
+        },
+        {
+          "title": "Manage user access @dev",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should manage access for testuser @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests Manage user access @dev should manage access for testuser @dev",
+              "duration": 4.71,
+              "error": null
+            },
+            {
+              "status": 1,
+              "title": "should fail to manage access for foouser @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests Manage user access @dev should fail to manage access for foouser @dev",
+              "duration": 3.62,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 2,
+            "pending": 0,
+            "failures": 0,
+            "duration": 9.35,
+            "timeStart": 1442264940792,
+            "timeStop": 1442264950144
+          }
+        },
+        {
+          "title": "Empty Users table",
+          "suites": [],
+          "tests": [
+            {
+              "status": 1,
+              "title": "should show an error message when no users @dev",
+              "fullTitle": "Database Instance Details Page - Users Table Actions Midway Tests Empty Users table should show an error message when no users @dev",
+              "duration": 0.89,
+              "error": null
+            }
+          ],
+          "stats": {
+            "tests": 1,
+            "pending": 0,
+            "failures": 0,
+            "duration": 1.9,
+            "timeStart": 1442264950144,
+            "timeStop": 1442264952042
+          }
+        }
+      ],
+      "tests": [],
+      "stats": {
+        "tests": 10,
+        "pending": 0,
+        "failures": 0,
+        "duration": 36.78,
+        "timeStart": 1442264915260,
+        "timeStop": 1442264952042
+      }
+    }
+  ],
+  "tests": [],
+  "stats": {
+    "tests": 10,
+    "pending": 0,
+    "failures": 0,
+    "duration": 40.91,
+    "timeStart": 1442264911131,
+    "timeStop": 1442264952042
+  }
+}

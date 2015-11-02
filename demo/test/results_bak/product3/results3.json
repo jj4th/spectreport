@@ -1,0 +1,37 @@
+{
+    "title":"Suite-3",
+    "suites":[{
+        "title":"Child-3",
+        "suites":[],
+        "tests":[{
+            "status":1,
+            "title":"Test-5",
+            "fullTitle":"Suite-3 - Child-3 - Test-5",
+            "duration":15,
+            "error":null
+        }],
+        "stats":{
+            "tests":1,
+            "pending":0,
+            "failures":0,
+            "duration":15,
+            "timeStart":35000,
+            "timeStop":50000
+        }
+    }],
+    "tests":[{
+        "status":1,
+        "title":"Test-6",
+        "fullTitle":"Suite-3 - Test-6",
+        "duration":25,
+        "error":null
+    }],
+    "stats":{
+        "tests":2,
+        "pending":0,
+        "failures":0,
+        "duration":40,
+        "timeStart":35000,
+        "timeStop":75000
+    }
+}
