@@ -1,6 +1,6 @@
 {
   "name": "spectreport",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A generator of beutiful HTML test reports",
   "main": "./lib/spectreport.min.js",
   "scripts": {

@@ -4,18 +4,19 @@ const Mocha = require('mocha'),
     Test = Mocha.Test,
     path = require('path');
 
+const srcPath = path.relative('.', path.resolve(__dirname, '../../src'));
 // static fixtures
 const fixtures = {
     indexDefaults: {
         outputHtml: 'test/results/index.html',
         jsonDir: 'test/results',
-        template: path.join(path.resolve(__dirname, '../../src'), 'assets/results.dot'),
+        template: path.join(srcPath, 'assets/results.dot'),
         suiteTitle: 'Test Results'
     },
     indexCustom: {
         outputHtml: 'test/results/index2.html',
         jsonDir: 'test/results2',
-        template: path.join(path.resolve(__dirname, '../../src'), 'assets/results2.dot'),
+        template: path.join(srcPath, 'assets/results2.dot'),
         suiteTitle: 'Test Results 2'
     },
     noResultsError: 'No results were found.  Did you run the tests?',
