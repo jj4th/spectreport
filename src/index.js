@@ -7,7 +7,7 @@ import Aggregator from './classes/aggregator'
 const defaults = {
     outputHtml: 'test/results/index.html',
     jsonDir: 'test/results',
-    template: path.join(__dirname, 'assets/results.dot'),
+    template: path.join(path.relative('.', __dirname), 'assets/results.dot'),
     suiteTitle: 'Test Results'
 };
 
@@ -66,4 +66,5 @@ class Spectreport {
 Spectreport.Stats = Stats;
 Spectreport.Suite = Suite;
 Spectreport.Test = Test;
+Spectreport.DefaultOptions = defaults;
 export default Spectreport;

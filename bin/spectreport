@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+var Spectreport = require('../lib/spectreport.min.js');
+var commandLineArgs = require('command-line-args');
+var fs = require('fs-extra');
+
+var cla = commandLineArgs([
+  { name: 'outputHtml', alias: 'o', type: String,
+    description: '[' + Spectreport.DefaultOptions.outputHtml + '] HTML file to write out the report.' },
+  { name: 'jsonDir', alias: 'j', type: String,
+    description: '[' + Spectreport.DefaultOptions.jsonDir + '] JSON directory to load test results from.'},
+  { name: 'template', alias: 't', type: String,
+    description: '[' + Spectreport.DefaultOptions.template + '] dot.js template render report from.' },
+  { name: 'suiteTitle', alias: 's', type: String,
+    description: '[' + Spectreport.DefaultOptions.suiteTitle + '] Suite title to use in the report.' },
+  { name: 'help', alias: 'h', type: Boolean,
+    description: 'Print this message.'}
+]);
+
+var usage = {
+    synopsis: [
+        '$ node spectreport [[bold]{-o} [underline]{path/output.html}]' +
+        ' [[bold]{-j} [underline]{path/json}]' +
+        ' [[bold]{-t} [underline]{path/template.dot}]' +
+        ' [[bold]{-s} "[underline]{Test Results}"]'
+    ]
+}
+
+try {
+    var options = cla.parse();
+} catch (e) {
+    console.log(e.message);
+    console.log(cla.getUsage(usage));
+    return 0;
+}
+
+if (options.help) {
+    console.log(cla.getUsage(usage));
+    return 0;
+}
+
+try {
+    var reporter = new Spectreport(options);
+    reporter.reportFile();
+}
+catch (e) {
+    console.log(e.message);
+    return 0;
+}
+
+try {
+    var summary = reporter.summary();
+
+    for(key in summary) {
+        console.log(key, summary[key])
+    }
+} catch (e) {
+    console.log(e.message);
+}
