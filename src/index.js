@@ -30,6 +30,7 @@ class Spectreport {
         }
 
         try {
+            this.results = results;
             let tpl = fs.readFileSync(this.opts.template);
             let render = dot.template(tpl);
             report = render(results);

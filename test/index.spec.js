@@ -134,6 +134,12 @@ describe('Index file', () => {
             expect(report).to.eql('rendered');
         });
 
+        it('should populate the results property', () => {
+            report = spectreport.report();
+            expect(spectreport.results).to.not.be.undefined;
+            expect(spectreport.results.stats).to.eql(f.suite.stats);
+        });
+
         it('should throw error when there are no results', () => {
             aggregatorScan.returns(undefined);
             expect(spectreport.report.bind(spectreport)).to.throw(f.noResultsError);

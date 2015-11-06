@@ -74,11 +74,10 @@ class Aggregator {
 
             try {
                 jsonObj = fs.readJsonSync(file);
+                this.addJsonObject(keyPath, jsonObj);
             } catch (ex) {
                 throw new Error('There was a problem reading a results file: ' + file + '.\n' + ex.message);
             }
-
-            this.addJsonObject(keyPath, jsonObj);
         }
     }
 
