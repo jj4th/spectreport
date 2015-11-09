@@ -35,7 +35,8 @@ class Spectreport {
             let render = dot.template(tpl);
             report = render(results);
         } catch (ex) {
-            throw new Error('There was a problem rendering the HTML report.\n' + ex.message);
+            ex.message = 'There was a problem rendering the HTML report.\n' + ex.message;
+            throw ex;
         }
 
         return report;
@@ -49,7 +50,8 @@ class Spectreport {
         try {
             fs.writeFileSync(outputHtml, report);
         } catch (ex) {
-            throw new Error('There was a problem outputting the HTML report to disk.\n' + ex.message);
+            ex.message = 'There was a problem outputting the HTML report to disk.\n' + ex.message;
+            throw ex;
         }
 
         return true;
