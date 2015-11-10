@@ -1,7 +1,7 @@
 class Test {
     constructor(test, status, err) {
         this.status = status;
-        this.title = test.title;
+        this.title = String(test.title);
         this.fullTitle = test.fullTitle();
         this.duration = Math.round(test.duration / 10) / 100;
         this.error = null;

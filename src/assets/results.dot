@@ -67,7 +67,7 @@
         {{ var testClass = (test.status === 2 ? 'pending' : (test.status === 1 ? 'passed' : 'failed')); }}
         <div class="mui-row test mui-text-caption {{=testClass}}">
             <div class="testName mui-col-sm-6" style="text-indent:{{=indent}}px;" title="{{=test.title}}">
-                {{=String(test.title)}}</div>
+                {{=test.title}}</div>
             <div class="testDuration mui-col-sm-2">{{=(test.duration || 0).toFixed(2)}}</div>
             {{?test.status === 2}}
             <div class="testStatus mui-col-sm-2 mui-col-sm-offset-2">-</div>
