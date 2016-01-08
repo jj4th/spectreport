@@ -82,17 +82,25 @@ describe('Index file', () => {
         });
     });
 
+    describe('scan', () => {
+        it('should call aggregator.scan');
+        it('should throw error when aggregator.scan fails');
+        it('should throw error when there are no results');
+        it('should throw error when there are no result stats');
+    });
+
     describe('report', () => {
-        let spectreport, report;
+        let spectreport, scan;
 
         before(() => {
             spectreport = new Spectreport();
+            scan = sinon.spy(function () {
+                spectreport.results = f.suite;
+            });
+            spectreport.scan = scan;
         });
 
         beforeEach(() => {
-            aggregatorScan.reset();
-            aggregatorScan.returns(f.suite);
-
             readFileSync.reset();
             readFileSync.resetBehavior();
             readFileSync.returns('template');
@@ -106,9 +114,9 @@ describe('Index file', () => {
             dotRender.returns('rendered');
         });
 
-        it('should invoke aggregator.scan', () => {
+        it('should call scan when there are no results', () => {
             spectreport.report();
-            expect(aggregatorScan).to.have.been.calledOnce;
+            expect(scan).to.have.been.calledOnce;
         });
 
         it('should read the template file', () => {
@@ -129,25 +137,10 @@ describe('Index file', () => {
             expect(dotRender).to.have.been.calledWith(f.suite);
         });
 
-        it('should return the report', () => {
-            report = spectreport.report();
-            expect(report).to.eql('rendered');
-        });
-
-        it('should populate the results property', () => {
-            report = spectreport.report();
-            expect(spectreport.results).to.not.be.undefined;
-            expect(spectreport.results.stats).to.eql(f.suite.stats);
-        });
-
-        it('should throw error when there are no results', () => {
-            aggregatorScan.returns(undefined);
-            expect(spectreport.report.bind(spectreport)).to.throw(f.noResultsError);
-        });
-
-        it('should throw error when there are no stats', () => {
-            aggregatorScan.returns({});
-            expect(spectreport.report.bind(spectreport)).to.throw(f.noResultsError);
+        it('should populate the reportHtml property', () => {
+            spectreport.report();
+            expect(spectreport.reportHtml).to.not.be.undefined;
+            expect(spectreport.reportHtml).to.eql('rendered');
         });
 
         it('should throw error when the template file cannot be read', () => {
@@ -169,12 +162,14 @@ describe('Index file', () => {
         });
     });
 
-    describe('reportFile', () => {
-        let spectreport, report, reportFile;
+    describe('output', () => {
+        let spectreport, report;
 
         before(() => {
             spectreport = new Spectreport();
-            report = sinon.mock().returns('report');
+            report = sinon.spy(function () {
+                spectreport.reportHtml = 'report';
+            });
             spectreport.report = report;
         });
 
@@ -185,56 +180,49 @@ describe('Index file', () => {
             writeFileSync.returns(true);
         });
 
-        it('should invoke report', function () {
-            spectreport.reportFile();
+        it('should invoke report when there is no reportHtml', function () {
+            spectreport.output();
             expect(report).to.have.been.calledOnce;
         });
 
         it('should invoke writeFileSync with default outputHtml', function () {
-            spectreport.reportFile();
+            spectreport.output();
             expect(writeFileSync).to.have.been.calledOnce;
             expect(writeFileSync).to.have.been.calledWith(f.indexDefaults.outputHtml, 'report');
         });
 
         it('should invoke writeFileSync with custom outputHtml', function () {
-            spectreport.reportFile(f.indexCustom.outputHtml);
+            spectreport.output(f.indexCustom.outputHtml);
             expect(writeFileSync).to.have.been.calledOnce;
             expect(writeFileSync).to.have.been.calledWith(f.indexCustom.outputHtml, 'report');
-        });
-
-        it('should return true on success', function () {
-            reportFile = spectreport.reportFile();
-            expect(reportFile).to.be.true;
         });
 
         it('should throw an error on file write exception', function () {
             let errMsg = 'File Not Found';
             writeFileSync.throws(new Error(errMsg));
-            expect(spectreport.reportFile.bind(spectreport)).to.throw(f.writeFileError + errMsg);
+            expect(spectreport.output.bind(spectreport)).to.throw(f.writeFileError + errMsg);
         });
     });
 
     describe('summary', () => {
-        let spectreport, summary;
+        let spectreport, summary, scan;
 
         before(() => {
             spectreport = new Spectreport();
+            scan = sinon.spy(function() {
+                spectreport.results = { stats: f.stats };
+            });
+            spectreport.scan = scan;
+        });
+
+        it('should call scan when there are no results', () => {
+            spectreport.summary();
+            expect(scan).to.have.been.calledOnce;
         });
 
         it('should return the stats object', () => {
-            spectreport.results = { stats: f.stats };
             summary = spectreport.summary();
             expect(summary).to.eql(f.stats);
-        });
-
-        it('should throw an error if there is no results object', () => {
-            spectreport.results = undefined;
-            expect(spectreport.summary.bind(spectreport)).to.throw(f.noSummaryError);
-        });
-
-        it('should throw an error if there is no stats object', () => {
-            spectreport.results = { };
-            expect(spectreport.summary.bind(spectreport)).to.throw(f.noSummaryError);
         });
     });
 });
