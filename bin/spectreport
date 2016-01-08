@@ -2,7 +2,9 @@
 var Spectreport = require('../lib/spectreport.min.js');
 var commandLineArgs = require('command-line-args');
 var fs = require('fs-extra');
+var path = require('path');
 
+// CLI Options
 var cla = commandLineArgs([
   { name: 'outputHtml', alias: 'o', type: String,
     description: '[' + Spectreport.DefaultOptions.outputHtml + '] HTML file to write out the report.' },
@@ -12,19 +14,67 @@ var cla = commandLineArgs([
     description: '[' + Spectreport.DefaultOptions.template + '] dot.js template render report from.' },
   { name: 'suiteTitle', alias: 's', type: String,
     description: '[' + Spectreport.DefaultOptions.suiteTitle + '] Suite title to use in the report.' },
+  { name: 'quiet', alias: 'q', type: Boolean,
+    description: 'Suppress printing the summary.'},
+  { name: 'noOutput', alias: 'n', type: Boolean,
+    description: 'Suppress automatic report. (Useful with plugins, implies -q)'},
+  { name: 'plugins', alias: 'p', type: String, multiple: true,
+    description: 'Optional plugin(s) support.'},
+  { name: 'pluginOpts', alias: 'x', type: String, multiple: true,
+    description: 'Option(s) to pass to plugin(s) (option:value).'},
   { name: 'help', alias: 'h', type: Boolean,
     description: 'Print this message.'}
 ]);
 
 var usage = {
     synopsis: [
-        '$ node spectreport [[bold]{-o} [underline]{path/output.html}]' +
+        '$ node spectreport [bold]{-nq} [[bold]{-o} [underline]{path/output.html}]' +
         ' [[bold]{-j} [underline]{path/json}]' +
         ' [[bold]{-t} [underline]{path/template.dot}]' +
-        ' [[bold]{-s} "[underline]{Test Results}"]'
+        ' [[bold]{-s} "[underline]{Test Results}"]' +
+        ' [[bold]{-p} "path/myPlugin.js, ...]' +
+        ' [[bold]{-x} option1:value1, ...]'
     ]
 }
 
+// Utility Functions
+var parsePluginOpts = function (pluginOpts) {
+    try {
+        return pluginOpts.reduce(function (obj, opt) {
+            var tmp = opt.split(':');
+            obj[tmp.shift()] = tmp.join(':');
+            return obj;
+        }, {});
+    } catch (ex) {
+        ex.message = 'Error parsing pluginOpts\n' + ex.message;
+        throw ex;
+    }
+}
+
+var runPlugins = function (reporter, plugins, pluginOpts) {
+    if (pluginOpts) {
+        pluginOpts = parsePluginOpts(pluginOpts);
+    }
+
+    plugins.forEach(function (pluginFile) {
+        try {
+            var plugin = require(path.resolve('.', pluginFile));
+            plugin(pluginOpts, reporter);
+        } catch (ex) {
+            ex.message = 'Error running plugin (' + path.basename(pluginFile) + '):\n' + ex.message;
+            throw ex;
+        }
+    });
+};
+
+var printSummary = function(reporter) {
+    var summary = reporter.summary();
+    Object.getOwnPropertyNames(summary).forEach(function (key) {
+        console.log(key, summary[key]);
+    });
+}
+
+// CLI Logic
 try {
     var options = cla.parse();
 } catch (e) {
@@ -40,18 +90,20 @@ if (options.help) {
 
 try {
     var reporter = new Spectreport(options);
-    reporter.reportFile();
-}
-catch (e) {
-    console.log(e.message);
-    return 0;
-}
 
-try {
-    var summary = reporter.summary();
+    // If there's plugins, run the plugins.
+    if (options.plugins) {
+        runPlugins(reporter, options.plugins, options.pluginOpts);
+    }
 
-    for(key in summary) {
-        console.log(key, summary[key])
+    // Execute the reporter
+    if (!options.noOutput) {
+        reporter.output();
+    }
+
+    // Output a summary
+    if (!(options.noOutput || options.quiet)) {
+        printSummary(reporter);
     }
 } catch (e) {
     console.log(e.message);
