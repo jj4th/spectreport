@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var exec = require('child_process').exec;
 var $ = require('gulp-load-plugins')({
   replaceString: /^gulp(-|\.)([0-9]+)?/
 });
@@ -145,6 +146,15 @@ gulp.task('test', ['lint-src', 'lint-test'], function() {
 gulp.task('mocha', function() {
   require('babel/register')({ modules: 'common' });
   return test();
+});
+
+// Make demo
+gulp.task('demo', ['build'], function (done) {
+  exec('spectreport -j test/setup/fixtures -o ./demo/index.html', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    done(err);
+  });
 });
 
 // An alias of test
