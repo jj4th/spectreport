@@ -23,6 +23,7 @@ const pluginSrc         = config.pluginSrc;
 const pluginDest        = config.pluginDest;
 const srcPath           = 'src/**/*.js';
 const testPath          = 'test/**/*.spec.js';
+const srcPluginPath     = 'plugins/**/*.js';
 const setupPath         = 'test/setup/node.js';
 
 function test() {
@@ -58,6 +59,20 @@ gulp.task('lint-src', function() {
 // Lint our test code
 gulp.task('lint-test', function() {
   return gulp.src([testPath])
+    .pipe($.plumber())
+    .pipe($.eslint({
+      configFile: './test/.eslintrc',
+      envs: [
+        'node'
+      ]
+    }))
+    .pipe($.eslint.formatEach('stylish', process.stderr))
+    .pipe($.eslint.failOnError());
+});
+
+// Lint our test code
+gulp.task('lint-plugins', function() {
+  return gulp.src([pluginSrc])
     .pipe($.plumber())
     .pipe($.eslint({
       configFile: './test/.eslintrc',
@@ -107,9 +122,9 @@ gulp.task('build', ['lint-src', 'clean', 'assets', 'plugins'], function(done) {
   });
 });
 
-gulp.task('coverage', ['lint-src', 'lint-test'], function(done) {
+gulp.task('coverage', ['lint-src', 'lint-test', 'lint-plugins'], function(done) {
   require('babel/register')({ modules: 'common' });
-  gulp.src([srcPath])
+  gulp.src([srcPath, srcPluginPath])
     .pipe($.plumber())
     .pipe($.istanbul({ instrumenter: isparta.Instrumenter, includeUntested: true }))
     .pipe($.istanbul.hookRequire())

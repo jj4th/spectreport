@@ -63,7 +63,7 @@
     "entryFileName": "src/index",
     "assetSrc": "src/assets",
     "assetDest": "lib/assets",
-    "pluginSrc": "plugins",
+    "pluginSrc": "plugins/src",
     "pluginDest": "lib/plugins",
     "mochaGlobals": [
       "stub",
