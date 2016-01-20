@@ -83,10 +83,35 @@ describe('Index file', () => {
     });
 
     describe('scan', () => {
-        it('should call aggregator.scan');
-        it('should throw error when aggregator.scan fails');
-        it('should throw error when there are no results');
-        it('should throw error when there are no result stats');
+        let spectreport;
+
+        before(() => {
+            aggregatorScan.reset();
+
+            spectreport = new Spectreport();
+        });
+
+        it('should call aggregator.scan', () => {
+            aggregatorScan.returns(f.suite);
+            spectreport.scan();
+            expect(aggregatorScan).to.have.been.calledOnce;
+        });
+
+        it('should throw error when there are no results', () => {
+            aggregatorScan.returns();
+            expect(spectreport.scan.bind(spectreport)).to.throw(f.noResultsError);
+        });
+
+        it('should throw error when there are no result stats', () => {
+            aggregatorScan.returns({});
+            expect(spectreport.scan.bind(spectreport)).to.throw(f.noResultsError);
+        });
+
+        it('should throw error when aggregator.scan fails', () => {
+            let errMsg = 'File Not Found';
+            aggregatorScan.throws(new Error(errMsg));
+            expect(spectreport.scan.bind(spectreport)).to.throw(f.aggregatorScanError + errMsg);
+        });
     });
 
     describe('report', () => {

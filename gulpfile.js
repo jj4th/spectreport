@@ -19,6 +19,8 @@ const exportFileName    = path.basename(mainFile, '.min.js');
 
 const assetSrc          = config.assetSrc;
 const assetDest         = config.assetDest;
+const pluginSrc         = config.pluginSrc;
+const pluginDest        = config.pluginDest;
 const srcPath           = 'src/**/*.js';
 const testPath          = 'test/**/*.spec.js';
 const setupPath         = 'test/setup/node.js';
@@ -67,8 +69,21 @@ gulp.task('lint-test', function() {
     .pipe($.eslint.failOnError());
 });
 
+gulp.task('assets', ['clean'], function () {
+  return gulp.src([assetSrc + '/**/*'], { "base" : assetSrc})
+    .pipe(gulp.dest(assetDest));
+});
+
+gulp.task('plugins', ['clean'], function () {
+  return gulp.src([pluginSrc + '/**/*'], { "base" : pluginSrc})
+    .pipe($.rename({extname: '.min.js'}))
+    .pipe($.uglify())
+    .pipe(gulp.dest(pluginDest));
+});
+
 // Build two versions of the library
-gulp.task('build', ['lint-src', 'clean'], function(done) {
+gulp.task('build', ['lint-src', 'clean', 'assets', 'plugins'], function(done) {
+  mkdirp.sync(destinationFolder);
   rollup.rollup({
     entry: config.entryFileName + '.js',
   }).then(function(bundle) {
@@ -80,8 +95,6 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
       external: ['dot', 'fs-extra', 'babel-runtime']
     });
 
-    mkdirp.sync(destinationFolder);
-
     $.file(exportFileName + '.js', res.code, { src: true })
       .pipe($.plumber())
       .pipe($.sourcemaps.init({ loadMaps: true }))
@@ -92,8 +105,6 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
       .pipe(gulp.dest(destinationFolder))
       .on('end', done);
   });
-  gulp.src([assetSrc + '/**/*'], { "base" : assetSrc})
-    .pipe(gulp.dest(assetDest));
 });
 
 gulp.task('coverage', ['lint-src', 'lint-test'], function(done) {

@@ -34,7 +34,7 @@
     "chai": "^2.1.2",
     "del": "^1.1.1",
     "eslint": "^0.17.0",
-    "gulp": "^3.8.11",
+    "gulp": "3.9.0",
     "gulp-babel": "^5.2.1",
     "gulp-concat": "^2.5.2",
     "gulp-eslint": "^0.7.0",
@@ -63,6 +63,8 @@
     "entryFileName": "src/index",
     "assetSrc": "src/assets",
     "assetDest": "lib/assets",
+    "pluginSrc": "plugins",
+    "pluginDest": "lib/plugins",
     "mochaGlobals": [
       "stub",
       "spy",

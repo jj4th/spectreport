@@ -2,6 +2,9 @@
 logs
 *.log
 
+# Test output directory for testing
+test/results
+
 # Runtime data
 pids
 *.pid

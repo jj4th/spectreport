@@ -59,7 +59,7 @@ var runPlugins = function (reporter, plugins, pluginOpts) {
     plugins.forEach(function (pluginFile) {
         try {
             var plugin = require(path.resolve('.', pluginFile));
-            plugin(pluginOpts, reporter);
+            plugin(pluginOpts, reporter, Spectreport);
         } catch (ex) {
             ex.message = 'Error running plugin (' + path.basename(pluginFile) + '):\n' + ex.message;
             throw ex;
