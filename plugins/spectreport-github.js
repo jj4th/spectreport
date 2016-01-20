@@ -1,35 +1,63 @@
 var request = require('sync-request');
 
-function buildRepoUrl(repo, id, user, pass) {
-    var repoUrl = 'https://';
-
-    if (user && pass) {
-        repoUrl += user + ':' + pass + '@';
-    }
-    repoUrl += 'api.github.com/repos/' + repo +
-        '/issues/' + id + '/comments';
-
-    return repoUrl;
-}
-
-function githubBody(summary, reportUrl) {
-    var passes = summary.tests - summary.failures - summary.pending;
-    var results = '';
-
-    if (summary.failures > 0) {
-        results = '### Test FAILED!! :(###\nLink: ' + reportUrl + '\n' +
-            '**Pass:** *' + passes + '*  |  **Pend:** *' + summary.pending +
-            '*  |  **Fail:** *' + summary.failures + '*';
-    } else {
-        results = '#### Test passed :) ####\nLink: ' + reportUrl + '\n' +
-            '**Pass:** *' + passes + '*  |  **Pend:** *' + summary.pending + '*';
-    }
-    return results;
-}
-
-function SpectreportGithub(options, reporter) {
-    var url = buildRepoUrl(options.repo, options.id, options.user, options.pass);
+function SpectreportGithub(options, reporter, Spectreport) {
     var summary = reporter.summary();
+    var results = reporter.results;
+    var reportUrl = options.reportUrl;
+
+    var buildRepoUrl = function () {
+        var repoUrl = 'https://';
+
+        if (options.user && options.pass) {
+            repoUrl += options.user + ':' + options.pass + '@';
+        }
+        repoUrl += 'api.github.com/repos/' + options.repo +
+            '/issues/' + options.id + '/comments';
+
+        return repoUrl;
+    }
+    var url = buildRepoUrl(options.repo, options.id, options.user, options.pass);
+
+    var buildFailureLinks = function (results) {
+        var failureLinks = [];
+        for (test of results.tests) {
+            if (test.status === Spectreport.Test.TEST_FAIL) {
+                var link = '[' + test.fullTitle + '](' +
+                    reportUrl + '#' + test.hash + ')';
+                failureLinks.push(link);
+            }
+        }
+        for (suite of results.suites) {
+            var links = buildFailureLinks(suite);
+            if (links) {
+                failureLinks.push(links);
+            }
+        }
+        return failureLinks.length ? failureLinks.join('\n'): null;
+    }
+
+    var buildGithubBody = function () {
+        var passes = summary.tests - summary.failures - summary.pending;
+        var body = '';
+
+        if (summary.failures > 0) {
+            body = '### Test FAILED!! :(###\nLink: ' + reportUrl + '\n' +
+                '**Pass:** *' + passes + '*  |  **Pend:** *' + summary.pending +
+                '*  |  **Fail:** *' + summary.failures + '*\n\nFailures:\n';
+            body += buildFailureLinks(results, '')
+        } else {
+            body = '#### Test passed :) ####\nLink: ' + reportUrl + '\n' +
+                '**Pass:** *' + passes + '*  |  **Pend:** *' + summary.pending + '*';
+        }
+        return body;
+    }
+
+    if (summary.failures === 0 && options.onlyFail) {
+        if (!options.quiet) {
+            console.log('Github : No failures reported.');
+        }
+        return false;
+    }
 
     var post = {
         headers: {
@@ -37,7 +65,7 @@ function SpectreportGithub(options, reporter) {
             'User-Agent': 'git CL - node'
         },
         json: {
-            body: githubBody(summary, options.reportUrl)
+            body: buildGithubBody(reporter, options.reportUrl)
         }
     };
 
@@ -50,6 +78,7 @@ function SpectreportGithub(options, reporter) {
     try {
         var response = request('POST', url, post);
         response.getBody('utf-8');
+        console.log(post.json.body);
     } catch (e) {
         e.message = 'Github : Error while posting results\n' + e.message;
         throw e;
@@ -58,6 +87,7 @@ function SpectreportGithub(options, reporter) {
     if (!options.quiet) {
         console.log('Github : Results reported to github!');
     }
+    return true;
 }
 
 module.exports = SpectreportGithub;
