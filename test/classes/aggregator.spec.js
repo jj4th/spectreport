@@ -192,9 +192,7 @@ describe('Aggregator class', () => {
 
         it('should throw the expected error on Exception', () => {
             readJsonSync.reset();
-            let fn = () => {
-                aggregator.addJsonFileList(f.aggregatorFS.fakeFileList);
-            };
+            let fn = aggregator.addJsonFileList.bind(aggregator, f.aggregatorFS.fakeFileList);
             expect(fn).to.throw(Error, /There was a problem reading a results file/);
         });
     });

@@ -16,12 +16,21 @@ const pluginFixtures = {
         user: 'user',
         pass: 'pass'
     },
-    optionsWithKey: {
+    optionsApiKey: {
         id: 7,
         repo: 'user/repository',
         reportUrl: 'http://jenkins.internal/job/382/report.html',
         apiKey: 'A6B5C4DE3F21'
     },
+    optionsNoCreds: {
+        id: 7,
+        repo: 'user/repository',
+        reportUrl: 'http://jenkins.internal/job/382/report.html'
+    },
+
+    noCredsError: new RegExp('^Github: No valid credentials specified.$'),
+    githubError: new RegExp('^Github: Error while posting results\n404 Github Not Found!'),
+    requestError: '404 Github Not Found!',
 
     repoUrl: 'https://user:pass@api.github.com/repos/user/repository/issues/7/comments',
     repoUrlApiKey: 'https://api.github.com/repos/user/repository/issues/7/comments',
@@ -87,7 +96,7 @@ const pluginFixtures = {
             }]
         }],
         "stats": {
-            "tests":0,
+            "tests":2,
             "pending":0,
             "failures":1,
             "duration":15,

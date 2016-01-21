@@ -25,7 +25,7 @@ function buildFailureLinks(results, reportUrl, failStatus) {
     }
     if (results.suites) {
         for (var suite of results.suites) {
-            var links = buildFailureLinks(suite, failStatus);
+            var links = buildFailureLinks(suite, reportUrl, failStatus);
             if (links.length) {
                 failureLinks.push(links);
             }
@@ -42,7 +42,7 @@ function buildGithubBody(summary, results, reportUrl, failStatus) {
         body = '### Test FAILED!! :(###\nLink: ' + reportUrl + '\n' +
             '**Pass:** *' + passes + '*  |  **Pend:** *' + summary.pending +
             '*  |  **Fail:** *' + summary.failures + '*\n\nFailures:\n';
-        body += buildFailureLinks(results, failStatus);
+        body += buildFailureLinks(results, reportUrl, failStatus);
     } else {
         body = '#### Test passed :) ####\nLink: ' + reportUrl + '\n' +
             '**Pass:** *' + passes + '*  |  **Pend:** *' + summary.pending + '*';
@@ -90,7 +90,7 @@ function SpectreportGithub(options, reporter) {
 
     if (summary.failures === 0 && options.onlyFail) {
         if (!options.quiet) {
-            console.log('Github : No failures reported.');
+            console.log('Github: No failures reported.');
         }
         return false;
     }
@@ -108,19 +108,19 @@ function SpectreportGithub(options, reporter) {
     if (options.apiKey) {
         post.headers.Authorization = 'token ' + options.apiKey;
     } else if (!options.user || !options.pass) {
-        throw new Error('No valid credentials specified.');
+        throw new Error('Github: No valid credentials specified.');
     }
 
     try {
         var response = request('POST', githubUrl, post);
         response.getBody('utf-8');
-    } catch (e) {
-        e.message = 'Github : Error while posting results\n' + e.message;
-        throw e;
+    } catch (ex) {
+        ex.message = 'Github: Error while posting results\n' + ex.message;
+        throw ex;
     }
 
     if (!options.quiet) {
-        console.log('Github : Results reported to github!');
+        console.log('Github: Results reported to github!');
     }
     return true;
 }
