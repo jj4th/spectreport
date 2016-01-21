@@ -6,6 +6,8 @@ var path = require('path');
 
 // CLI Options
 var cla = commandLineArgs([
+  { name: 'configFile', alias: 'c', type: String,
+    description: 'A JSON format configuration file to use instead of command line arguments.'},
   { name: 'outputHtml', alias: 'o', type: String,
     description: '[' + Spectreport.DefaultOptions.outputHtml + '] HTML file to write out the report.' },
   { name: 'jsonDir', alias: 'j', type: String,
@@ -22,18 +24,27 @@ var cla = commandLineArgs([
     description: 'Optional plugin(s) support.'},
   { name: 'pluginOpts', alias: 'x', type: String, multiple: true,
     description: 'Option(s) to pass to plugin(s) (option:value).'},
+  { name: 'pluginUsage', alias: 'u', type: String,
+    description: 'Request usage information for the specified plugin.'},
   { name: 'help', alias: 'h', type: Boolean,
     description: 'Print this message.'}
 ]);
 
 var usage = {
     synopsis: [
-        '$ node spectreport [bold]{-nq} [[bold]{-o} [underline]{path/output.html}]' +
+        '$ node spectreport [[bold]{-nq}] [[bold]{-o} [underline]{path/output.html}]' +
         ' [[bold]{-j} [underline]{path/json}]' +
         ' [[bold]{-t} [underline]{path/template.dot}]' +
         ' [[bold]{-s} "[underline]{Test Results}"]' +
         ' [[bold]{-p} "path/myPlugin.js, ...]' +
-        ' [[bold]{-x} option1:value1, ...]'
+        ' [[bold]{-u} "path/myPlugin.js]' +
+        ' [[bold]{-x} option1:value1, ...]',
+        '',
+        '$ node spectreport [bold]{-c} "spectreport.conf.json"',
+        '',
+        '  The config file should contain a single JSON object with key value pairs corresponding' +
+        ' to the long-form option name.  [bold]{--plugins} and [bold]{--pluginOpts} should be specified' +
+        ' as arrays of String arguments in the same format as described below.'
     ]
 }
 
@@ -59,7 +70,7 @@ var runPlugins = function (reporter, plugins, pluginOpts) {
     plugins.forEach(function (pluginFile) {
         try {
             var plugin = require(path.resolve('.', pluginFile));
-            plugin(pluginOpts, reporter, Spectreport);
+            plugin(pluginOpts, reporter);
         } catch (ex) {
             ex.message = 'Error running plugin (' + path.basename(pluginFile) + '):\n' + ex.message;
             throw ex;
@@ -85,6 +96,12 @@ try {
 
 if (options.help) {
     console.log(cla.getUsage(usage));
+    return 0;
+}
+
+if (options.pluginUsage) {
+    var plugin = require(path.resolve('.', options.pluginUsage));
+    plugin.getUsage();
     return 0;
 }
 

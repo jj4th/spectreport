@@ -24,11 +24,12 @@ const pluginSrc         = config.pluginSrc;
 const pluginDest        = config.pluginDest;
 const srcPath           = 'src/**/*.js';
 const testPath          = 'test/**/*.spec.js';
-const srcPluginPath     = 'plugins/**/*.js';
+const srcPluginPath     = 'plugins/**/*.plugin.js';
+const testPluginPath    = 'plugins/**/*.spec.js';
 const setupPath         = 'test/setup/node.js';
 
 function test() {
-  return gulp.src([setupPath, testPath], {read: false})
+  return gulp.src([setupPath, testPath, testPluginPath], {read: false})
     .pipe($.plumber())
     .pipe($.mocha({globals: config.mochaGlobals}));
 }
@@ -45,7 +46,7 @@ gulp.task('clean-tmp', function(cb) {
 
 // Lint our source code
 gulp.task('lint-src', function() {
-  return gulp.src([srcPath])
+  return gulp.src([srcPath, srcPluginPath])
     .pipe($.plumber())
     .pipe($.eslint({
       configFile: './.eslintrc',
@@ -59,21 +60,7 @@ gulp.task('lint-src', function() {
 
 // Lint our test code
 gulp.task('lint-test', function() {
-  return gulp.src([testPath])
-    .pipe($.plumber())
-    .pipe($.eslint({
-      configFile: './test/.eslintrc',
-      envs: [
-        'node'
-      ]
-    }))
-    .pipe($.eslint.formatEach('stylish', process.stderr))
-    .pipe($.eslint.failOnError());
-});
-
-// Lint our test code
-gulp.task('lint-plugins', function() {
-  return gulp.src([pluginSrc])
+  return gulp.src([testPath, testPluginPath])
     .pipe($.plumber())
     .pipe($.eslint({
       configFile: './test/.eslintrc',
@@ -123,7 +110,7 @@ gulp.task('build', ['lint-src', 'clean', 'assets', 'plugins'], function(done) {
   });
 });
 
-gulp.task('coverage', ['lint-src', 'lint-test', 'lint-plugins'], function(done) {
+gulp.task('coverage', ['lint-src', 'lint-test'], function(done) {
   require('babel/register')({ modules: 'common' });
   gulp.src([srcPath, srcPluginPath])
     .pipe($.plumber())
