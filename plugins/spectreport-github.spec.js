@@ -92,7 +92,7 @@ describe('Plugin - Github', () => {
             plugin(options, reporter);
             let call = request.args[0];
 
-            expect(call[2].headers).to.have.property('Authorization', 'token ' + fixtures.optionsApiKey.apiKey);
+            expect(call[2].headers).to.have.property('Authorization', 'token ' + fixtures.optionsApiKey.ghApiKey);
         });
 
         it('should report error when no valid credentials supplied', () => {
@@ -125,14 +125,14 @@ describe('Plugin - Github', () => {
         });
 
         it('should not send report on failOnly', () => {
-            options.onlyFail = true;
+            options.ghOnlyFail = true;
             plugin(options, reporter);
 
             expect(request).to.not.have.been.called;
         });
 
         it('should not log to console on quiet', () => {
-            options.quiet = true;
+            options.ghQuiet = true;
             let log = plugin(options, reporter);
 
             expect(log).to.not.have.been.called;
@@ -162,13 +162,13 @@ describe('Plugin - Github', () => {
             expect(call[2]).to.have.property('json').eql({body: fixtures.messageFailure});
         });
         it('should send report on failOnly', () => {
-            options.onlyFail = true;
+            options.ghOnlyFail = true;
             plugin(options, reporter);
 
             expect(request).to.have.been.calledOnce;
         });
         it('should not log to console on quiet', () => {
-            options.quiet = true;
+            options.ghQuiet = true;
             let log = plugin(options, reporter);
 
             expect(log).to.not.have.been.called;

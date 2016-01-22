@@ -10,22 +10,22 @@ const pluginFixtures = {
     },
 
     options: {
-        id: 7,
-        repo: 'user/repository',
-        reportUrl: 'http://jenkins.internal/job/382/report.html',
-        user: 'user',
-        pass: 'pass'
+        ghId: 7,
+        ghRepo: 'user/repository',
+        ghReportUrl: 'http://jenkins.internal/job/382/report.html',
+        ghUser: 'user',
+        ghPass: 'pass'
     },
     optionsApiKey: {
-        id: 7,
-        repo: 'user/repository',
-        reportUrl: 'http://jenkins.internal/job/382/report.html',
-        apiKey: 'A6B5C4DE3F21'
+        ghId: 7,
+        ghRepo: 'user/repository',
+        ghReportUrl: 'http://jenkins.internal/job/382/report.html',
+        ghApiKey: 'A6B5C4DE3F21'
     },
     optionsNoCreds: {
-        id: 7,
-        repo: 'user/repository',
-        reportUrl: 'http://jenkins.internal/job/382/report.html'
+        ghId: 7,
+        ghRepo: 'user/repository',
+        ghReportUrl: 'http://jenkins.internal/job/382/report.html'
     },
 
     noCredsError: new RegExp('^Github: No valid credentials specified.$'),
