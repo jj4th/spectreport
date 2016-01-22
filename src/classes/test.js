@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 class Test {
     constructor(test, status, err) {
         this.status = status;
@@ -12,6 +14,9 @@ class Test {
                 this.error[key] = err[key];
             });
         }
+    }
+    get hash() {
+        return crypto.createHash('sha1').update(JSON.stringify(this)).digest('hex');
     }
     static fromObject(obj) {
         // Construct faux test object

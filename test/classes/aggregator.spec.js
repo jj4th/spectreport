@@ -70,9 +70,9 @@ describe('Aggregator class', () => {
         });
 
         it('should correctly add a JSON suite to the results', () => {
-            filename = f.aggregatorFS.fileList[0];
+            filename = f.aggregatorFS.fileList[1];
             json = f.aggregatorFS.json[filename];
-            keyPath = f.aggregatorFS.keyPath[0];
+            keyPath = f.aggregatorFS.keyPath[1];
             aggregator.addJsonObject(keyPath, json);
 
             let stats = aggregator.results.stats;
@@ -88,9 +88,9 @@ describe('Aggregator class', () => {
             expect(cursor = cursor.suites[0]).to.have.property('title', 'Suite-1');
         });
         it('should correctly add a second JSON suite to the results', () => {
-            filename = f.aggregatorFS.fileList[1];
+            filename = f.aggregatorFS.fileList[2];
             json = f.aggregatorFS.json[filename];
-            keyPath = f.aggregatorFS.keyPath[1];
+            keyPath = f.aggregatorFS.keyPath[2];
             aggregator.addJsonObject(keyPath, json);
 
             let stats = aggregator.results.stats;
@@ -106,9 +106,9 @@ describe('Aggregator class', () => {
             expect(cursor = cursor.suites[0]).to.have.property('title', 'Suite-2');
         });
         it('should correctly add a third JSON suite to the results', () => {
-            filename = f.aggregatorFS.fileList[2];
+            filename = f.aggregatorFS.fileList[3];
             json = f.aggregatorFS.json[filename];
-            keyPath = f.aggregatorFS.keyPath[2];
+            keyPath = f.aggregatorFS.keyPath[3];
             aggregator.addJsonObject(keyPath, json);
 
             let stats = aggregator.results.stats;
@@ -123,9 +123,9 @@ describe('Aggregator class', () => {
             expect(cursor = cursor.suites[0]).to.have.property('title', 'Suite-3');
         });
         it('should correctly add a fourth JSON suite to the results', () => {
-            filename = f.aggregatorFS.fileList[3];
+            filename = f.aggregatorFS.fileList[4];
             json = f.aggregatorFS.json[filename];
-            keyPath = f.aggregatorFS.keyPath[3];
+            keyPath = f.aggregatorFS.keyPath[4];
             aggregator.addJsonObject(keyPath, json);
 
             let stats = aggregator.results.stats;
@@ -138,6 +138,23 @@ describe('Aggregator class', () => {
             expect(cursor).to.have.property('title', 'product2');
             expect(cursor = cursor.suites[0]).to.have.property('title', 'action');
             expect(cursor = cursor.suites[1]).to.have.property('title', 'Suite-4');
+        });
+        it('should correctly add a JSON file to the results', () => {
+            filename = f.aggregatorFS.fileList[0];
+            json = f.aggregatorFS.json[filename];
+            keyPath = f.aggregatorFS.keyPath[0];
+            aggregator.addJsonObject(keyPath, json);
+
+            let stats = aggregator.results.stats;
+            let cursor = aggregator.results;
+
+            expect(stats).to.have.property('tests', 10);
+            expect(stats).to.have.property('duration', 125);
+            expect(stats).to.have.property('timeStart', 0);
+            expect(stats).to.have.property('timeStop', 125000);
+            expect(cursor).to.have.property('title', 'Test Suite');
+            expect(cursor = cursor.suites[2]).to.have.property('title', 'Suite-5');
+
         });
     });
 
@@ -175,9 +192,7 @@ describe('Aggregator class', () => {
 
         it('should throw the expected error on Exception', () => {
             readJsonSync.reset();
-            let fn = () => {
-                aggregator.addJsonFileList(f.aggregatorFS.fakeFileList);
-            };
+            let fn = aggregator.addJsonFileList.bind(aggregator, f.aggregatorFS.fakeFileList);
             expect(fn).to.throw(Error, /There was a problem reading a results file/);
         });
     });

@@ -72,6 +72,11 @@ class Aggregator {
             let keyPath = dir.split(path.sep);
             let jsonObj = null;
 
+            // Delete empty keyPath, occurs for top level tests.
+            if (keyPath[0] === '') {
+                keyPath.shift();
+            }
+
             try {
                 jsonObj = fs.readJsonSync(file);
                 this.addJsonObject(keyPath, jsonObj);

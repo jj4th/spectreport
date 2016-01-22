@@ -130,7 +130,7 @@
     <div id="reportTree" class="mui-panel mui-text-body1 expanded">
         {{ function buildTest(test, indent) { }}
         {{ var testClass = (test.status === 2 ? 'pending' : (test.status === 1 ? 'passed' : 'failed')); }}
-        <div class="mui-row test mui-text-caption {{=testClass}}">
+        <div class="mui-row test mui-text-caption {{=testClass}}" id="{{=test.hash}}">
             <div class="testName mui-col-sm-6" title="{{=test.title}}">
                 <div class="indent" style="margin-left:{{=indent}}px;">{{=test.title}}</div>
             </div>
@@ -305,6 +305,16 @@
 
         };
 
+        var expandToId = function(id) {
+            var element = document.getElementById(id);
+            element.classList.add('expanded');
+            while(element = element.parentNode) {
+                if (element.classList.contains('test') || element.classList.contains('suite')) {
+                    element.classList.add('expanded');
+                }
+            }
+        };
+
         for(index = 0; index < suites.length; index++) {
             suites[index].addEventListener('click', toggleExpanded);
         }
@@ -315,6 +325,11 @@
 
         expandAllInput.addEventListener('change', expandAll);
         filterFailedInput.addEventListener('change', filterFailed);
+
+        if(document.location.hash) {
+            var id = document.location.hash.slice(1);
+            expandToId(id);
+        }
     })();
 </script>
 </html>

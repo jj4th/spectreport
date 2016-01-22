@@ -2,8 +2,12 @@
 var Spectreport = require('../lib/spectreport.min.js');
 var commandLineArgs = require('command-line-args');
 var fs = require('fs-extra');
+var path = require('path');
 
+// CLI Options
 var cla = commandLineArgs([
+  { name: 'configFile', alias: 'c', type: String,
+    description: 'A configuration file to use instead of command line arguments.  See "example.conf.js"'},
   { name: 'outputHtml', alias: 'o', type: String,
     description: '[' + Spectreport.DefaultOptions.outputHtml + '] HTML file to write out the report.' },
   { name: 'jsonDir', alias: 'j', type: String,
@@ -12,19 +16,75 @@ var cla = commandLineArgs([
     description: '[' + Spectreport.DefaultOptions.template + '] dot.js template render report from.' },
   { name: 'suiteTitle', alias: 's', type: String,
     description: '[' + Spectreport.DefaultOptions.suiteTitle + '] Suite title to use in the report.' },
+  { name: 'quiet', alias: 'q', type: Boolean,
+    description: 'Suppress printing the summary.'},
+  { name: 'noOutput', alias: 'n', type: Boolean,
+    description: 'Suppress automatic report. (Useful with plugins, implies -q)'},
+  { name: 'plugins', alias: 'p', type: String, multiple: true,
+    description: 'Optional plugin(s) support.'},
+  { name: 'pluginOpts', alias: 'x', type: String, multiple: true,
+    description: 'Option(s) to pass to plugin(s) (option:value).'},
+  { name: 'pluginUsage', alias: 'u', type: String,
+    description: 'Request usage information for the specified plugin.'},
   { name: 'help', alias: 'h', type: Boolean,
     description: 'Print this message.'}
 ]);
 
 var usage = {
     synopsis: [
-        '$ node spectreport [[bold]{-o} [underline]{path/output.html}]' +
+        '$ node spectreport [[bold]{-nq}] [[bold]{-c} [underline]{path/spectreport.conf.js}' +
+        ' [[bold]{-o} [underline]{path/output.html}] ' +
         ' [[bold]{-j} [underline]{path/json}]' +
         ' [[bold]{-t} [underline]{path/template.dot}]' +
-        ' [[bold]{-s} "[underline]{Test Results}"]'
+        ' [[bold]{-s} "[underline]{Test Results}"]' +
+        ' [[bold]{-p} "path/myPlugin.js, ...]' +
+        ' [[bold]{-u} "path/myPlugin.js]' +
+        ' [[bold]{-x} option1:value1, ...]',
+        '',
+        '$ node spectreport [bold]{-c} "spectreport.conf.json"',
+        '',
+        '  The config file should export a single object with key:value pairs corresponding' +
+        ' to the long-form option name. [bold]{--plugins} should be specified as an array of String' +
+        ' arguments in the same format as described below. [bold]{--pluginOpts} should be specified as' +
+        ' an object with key:value pairs. Flags such as [bold]{--quiet} should be a key:value pair with' +
+        ' the value set to [bold]{true}.'
     ]
 }
 
+// Utility Functions
+var parsePluginOpts = function (pluginOpts) {
+    try {
+        return pluginOpts.reduce(function (obj, opt) {
+            var tmp = opt.split(':');
+            obj[tmp.shift()] = tmp.join(':');
+            return obj;
+        }, {});
+    } catch (ex) {
+        ex.message = 'Error parsing pluginOpts\n' + ex.message;
+        throw ex;
+    }
+}
+
+var runPlugins = function (reporter, plugins, pluginOpts) {
+    plugins.forEach(function (pluginFile) {
+        try {
+            var plugin = require(path.resolve('.', pluginFile));
+            plugin(pluginOpts, reporter);
+        } catch (ex) {
+            ex.message = 'Error running plugin (' + path.basename(pluginFile) + '):\n' + ex.message;
+            throw ex;
+        }
+    });
+};
+
+var printSummary = function(reporter) {
+    var summary = reporter.summary();
+    Object.getOwnPropertyNames(summary).forEach(function (key) {
+        console.log(key, summary[key]);
+    });
+}
+
+// CLI Logic
 try {
     var options = cla.parse();
 } catch (e) {
@@ -38,20 +98,41 @@ if (options.help) {
     return 0;
 }
 
-try {
-    var reporter = new Spectreport(options);
-    reporter.reportFile();
-}
-catch (e) {
-    console.log(e.message);
+if (options.pluginUsage) {
+    var plugin = require(path.resolve('.', options.pluginUsage));
+    plugin.getUsage();
     return 0;
 }
 
-try {
-    var summary = reporter.summary();
+if (options.pluginOpts) {
+    options.pluginOpts = parsePluginOpts(options.pluginOpts);
+}
 
-    for(key in summary) {
-        console.log(key, summary[key])
+if (options.configFile) {
+    var config = require(path.resolve('.', options.configFile));
+    for (key in config) {
+        if (Object.keys(options).indexOf(key) == -1) {
+            options[key] = config[key];
+        }
+    }
+}
+
+try {
+    var reporter = new Spectreport(options);
+
+    // If there's plugins, run the plugins.
+    if (options.plugins) {
+        runPlugins(reporter, options.plugins, options.pluginOpts);
+    }
+
+    // Execute the reporter
+    if (!options.noOutput) {
+        reporter.output();
+    }
+
+    // Output a summary
+    if (!(options.noOutput || options.quiet)) {
+        printSummary(reporter);
     }
 } catch (e) {
     console.log(e.message);

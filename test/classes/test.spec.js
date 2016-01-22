@@ -15,6 +15,7 @@ describe('Test class', () => {
             expect(passTest).to.have.property('fullTitle', f.testPass.fullTitle());
             expect(passTest).to.have.property('duration', 0.01);
             expect(passTest).to.have.property('error').to.be.null;
+            expect(passTest).to.have.property('hash', f.testPassHash);
         });
 
         it('should properly initalize a test object with error', () => {

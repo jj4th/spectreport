@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var exec = require('child_process').exec;
 var $ = require('gulp-load-plugins')({
   replaceString: /^gulp(-|\.)([0-9]+)?/
 });
@@ -19,12 +20,16 @@ const exportFileName    = path.basename(mainFile, '.min.js');
 
 const assetSrc          = config.assetSrc;
 const assetDest         = config.assetDest;
+const pluginSrc         = config.pluginSrc;
+const pluginDest        = config.pluginDest;
 const srcPath           = 'src/**/*.js';
 const testPath          = 'test/**/*.spec.js';
+const srcPluginPath     = 'plugins/**/*.plugin.js';
+const testPluginPath    = 'plugins/**/*.spec.js';
 const setupPath         = 'test/setup/node.js';
 
 function test() {
-  return gulp.src([setupPath, testPath], {read: false})
+  return gulp.src([setupPath, testPath, testPluginPath], {read: false})
     .pipe($.plumber())
     .pipe($.mocha({globals: config.mochaGlobals}));
 }
@@ -41,7 +46,7 @@ gulp.task('clean-tmp', function(cb) {
 
 // Lint our source code
 gulp.task('lint-src', function() {
-  return gulp.src([srcPath])
+  return gulp.src([srcPath, srcPluginPath])
     .pipe($.plumber())
     .pipe($.eslint({
       configFile: './.eslintrc',
@@ -55,7 +60,7 @@ gulp.task('lint-src', function() {
 
 // Lint our test code
 gulp.task('lint-test', function() {
-  return gulp.src([testPath])
+  return gulp.src([testPath, testPluginPath])
     .pipe($.plumber())
     .pipe($.eslint({
       configFile: './test/.eslintrc',
@@ -67,8 +72,21 @@ gulp.task('lint-test', function() {
     .pipe($.eslint.failOnError());
 });
 
+gulp.task('assets', ['clean'], function () {
+  return gulp.src([assetSrc + '/**/*'], { "base" : assetSrc})
+    .pipe(gulp.dest(assetDest));
+});
+
+gulp.task('plugins', ['clean'], function () {
+  return gulp.src([pluginSrc + '/**/*'], { "base" : pluginSrc})
+    .pipe($.rename({extname: '.min.js'}))
+    .pipe($.uglify())
+    .pipe(gulp.dest(pluginDest));
+});
+
 // Build two versions of the library
-gulp.task('build', ['lint-src', 'clean'], function(done) {
+gulp.task('build', ['lint-src', 'clean', 'assets', 'plugins'], function(done) {
+  mkdirp.sync(destinationFolder);
   rollup.rollup({
     entry: config.entryFileName + '.js',
   }).then(function(bundle) {
@@ -80,8 +98,6 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
       external: ['dot', 'fs-extra', 'babel-runtime']
     });
 
-    mkdirp.sync(destinationFolder);
-
     $.file(exportFileName + '.js', res.code, { src: true })
       .pipe($.plumber())
       .pipe($.sourcemaps.init({ loadMaps: true }))
@@ -92,13 +108,11 @@ gulp.task('build', ['lint-src', 'clean'], function(done) {
       .pipe(gulp.dest(destinationFolder))
       .on('end', done);
   });
-  gulp.src([assetSrc + '/**/*'], { "base" : assetSrc})
-    .pipe(gulp.dest(assetDest));
 });
 
 gulp.task('coverage', ['lint-src', 'lint-test'], function(done) {
   require('babel/register')({ modules: 'common' });
-  gulp.src([srcPath])
+  gulp.src([srcPath, srcPluginPath])
     .pipe($.plumber())
     .pipe($.istanbul({ instrumenter: isparta.Instrumenter, includeUntested: true }))
     .pipe($.istanbul.hookRequire())
@@ -119,6 +133,15 @@ gulp.task('test', ['lint-src', 'lint-test'], function() {
 gulp.task('mocha', function() {
   require('babel/register')({ modules: 'common' });
   return test();
+});
+
+// Make demo
+gulp.task('demo', ['build'], function (done) {
+  exec('spectreport -j test/setup/fixtures -o ./demo/index.html', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    done(err);
+  });
 });
 
 // An alias of test

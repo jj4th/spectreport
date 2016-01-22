@@ -19,6 +19,7 @@ const fixtures = {
         template: path.join(srcPath, 'assets/results2.dot'),
         suiteTitle: 'Test Results 2'
     },
+    aggregatorScanError: 'There was a problem aggregating the JSON results.\n',
     noResultsError: 'No results were found.  Did you run the tests?',
     noSummaryError: 'No results were found.  Did you run \'report()\'?',
     renderReportError: 'There was a problem rendering the HTML report.\n',
@@ -26,7 +27,7 @@ const fixtures = {
     aggregatorFS: {
         jsonDir: 'test/json',
         readdir: {
-            'test/json': ['product1', 'product2'],
+            'test/json': ['product1', 'product2', 'results5.json'],
             'test/json/product1': ['subproduct1', 'subproduct2'],
             'test/json/product1/subproduct1': ['action'],
             'test/json/product1/subproduct2': ['action'],
@@ -36,6 +37,7 @@ const fixtures = {
             'test/json/product2/action': ['results3.json', 'results4.json', 'otherfile.html']
         },
         fileList: [
+            'test/json/results5.json',
             'test/json/product1/subproduct1/action/results1.json',
             'test/json/product1/subproduct2/action/results2.json',
             'test/json/product2/action/results3.json',
@@ -45,12 +47,14 @@ const fixtures = {
             'test/json/fakeFile.notjson'
         ],
         keyPath: [
+            [],
             ['product1', 'subproduct1', 'action'],
             ['product1', 'subproduct2', 'action'],
             ['product2', 'action'],
             ['product2', 'action']
         ],
         json: {
+            'test/json/results5.json': require('./fixtures/results5'),
             'test/json/product1/subproduct1/action/results1.json': require('./fixtures/results1'),
             'test/json/product1/subproduct2/action/results2.json': require('./fixtures/results2'),
             'test/json/product2/action/results3.json': require('./fixtures/results3'),
@@ -86,6 +90,7 @@ const fixtures = {
         status: 1,
         duration: 10
     },
+    testPassHash: '2fc2177907d3df9fb5b44686d6e04090ccd4b10c',
     testPending: {
         title: 'Test Pending',
         fullTitle() {
