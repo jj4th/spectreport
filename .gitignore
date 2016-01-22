@@ -5,6 +5,9 @@ logs
 # Test output directory for testing
 test/results
 
+# Config file for local runs
+spectreport.conf.js
+
 # Runtime data
 pids
 *.pid

@@ -7,7 +7,7 @@ var path = require('path');
 // CLI Options
 var cla = commandLineArgs([
   { name: 'configFile', alias: 'c', type: String,
-    description: 'A JSON format configuration file to use instead of command line arguments.'},
+    description: 'A configuration file to use instead of command line arguments.  See "example.conf.js"'},
   { name: 'outputHtml', alias: 'o', type: String,
     description: '[' + Spectreport.DefaultOptions.outputHtml + '] HTML file to write out the report.' },
   { name: 'jsonDir', alias: 'j', type: String,
@@ -32,7 +32,8 @@ var cla = commandLineArgs([
 
 var usage = {
     synopsis: [
-        '$ node spectreport [[bold]{-nq}] [[bold]{-o} [underline]{path/output.html}]' +
+        '$ node spectreport [[bold]{-nq}] [[bold]{-c} [underline]{path/spectreport.conf.js}' +
+        ' [[bold]{-o} [underline]{path/output.html}] ' +
         ' [[bold]{-j} [underline]{path/json}]' +
         ' [[bold]{-t} [underline]{path/template.dot}]' +
         ' [[bold]{-s} "[underline]{Test Results}"]' +
@@ -42,9 +43,11 @@ var usage = {
         '',
         '$ node spectreport [bold]{-c} "spectreport.conf.json"',
         '',
-        '  The config file should contain a single JSON object with key value pairs corresponding' +
-        ' to the long-form option name.  [bold]{--plugins} and [bold]{--pluginOpts} should be specified' +
-        ' as arrays of String arguments in the same format as described below.'
+        '  The config file should export a single object with key:value pairs corresponding' +
+        ' to the long-form option name. [bold]{--plugins} should be specified as an array of String' +
+        ' arguments in the same format as described below. [bold]{--pluginOpts} should be specified as' +
+        ' an object with key:value pairs. Flags such as [bold]{--quiet} should be a key:value pair with' +
+        ' the value set to [bold]{true}.'
     ]
 }
 
@@ -63,10 +66,6 @@ var parsePluginOpts = function (pluginOpts) {
 }
 
 var runPlugins = function (reporter, plugins, pluginOpts) {
-    if (pluginOpts) {
-        pluginOpts = parsePluginOpts(pluginOpts);
-    }
-
     plugins.forEach(function (pluginFile) {
         try {
             var plugin = require(path.resolve('.', pluginFile));
@@ -103,6 +102,19 @@ if (options.pluginUsage) {
     var plugin = require(path.resolve('.', options.pluginUsage));
     plugin.getUsage();
     return 0;
+}
+
+if (options.pluginOpts) {
+    options.pluginOpts = parsePluginOpts(options.pluginOpts);
+}
+
+if (options.configFile) {
+    var config = require(path.resolve('.', options.configFile));
+    for (key in config) {
+        if (Object.keys(options).indexOf(key) == -1) {
+            options[key] = config[key];
+        }
+    }
 }
 
 try {
