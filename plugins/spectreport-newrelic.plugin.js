@@ -79,7 +79,7 @@ function SpectreportNewRelic(options, reporter) {
         throw ex;
     }
 
-    if (!options.quiet) {
+    if (!options.nrQuiet) {
         console.log('NewRelic: Results reported to New Relic!');
     }
     return true;
@@ -100,6 +100,10 @@ SpectreportNewRelic.getUsage = function () {
             '   [bold]{nrEventType}:"Spectreport Test Results"        The Event Type to register in New Relic',
             '   [bold]{nrProduct}:"MyCoolProduct"                     The Event Type to register in New Relic',
             '   [bold]{nrEnvironment}:"Staging"                       The Event Type to register in New Relic',
+            '',
+            '[bold]{Optional Options:}',
+            '',
+            '   [bold]{nrQuiet}                                       Suppress output to console'
         ]
     };
     console.log(cla.getUsage(usage));

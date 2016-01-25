@@ -95,6 +95,12 @@ describe('Plugin - Github', () => {
             expect(call[2].headers).to.have.property('Authorization', 'token ' + fixtures.optionsApiKey.ghApiKey);
         });
 
+        it('should log to console on success', () => {
+            let log = plugin(options, reporter);
+
+            expect(log).to.have.been.calledWith(fixtures.consoleSuccess);
+        });
+
         it('should report error when no valid credentials supplied', () => {
             options = fixtures.optionsNoCreds;
 
@@ -103,9 +109,9 @@ describe('Plugin - Github', () => {
 
         it('should report error when the github api call fails', () => {
             options = fixtures.options;
-            request.throws(new Error(fixtures.requestError));
+            request.throws(new Error(fixtures.githubError));
 
-            expect(plugin.bind(plugin, options, reporter)).to.throw(fixtures.githubError);
+            expect(plugin.bind(plugin, options, reporter)).to.throw(fixtures.postError);
         });
     });
 

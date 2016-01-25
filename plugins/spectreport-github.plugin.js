@@ -135,8 +135,8 @@ SpectreportGithub.getUsage = function () {
             '',
             '[bold]{Authentication Options:}',
             '',
-            '   Either    [bold]{ghUser}:username [bold]{ghPass:}password',
-            '   Or        [bold]{ghApiKey}:YOUR_API_KEY',
+            '   Either                [bold]{ghUser}:username [bold]{ghPass:}password',
+            '   Or                    [bold]{ghApiKey}:YOUR_API_KEY',
             '',
             '[bold]{Required Options:}',
             '',
@@ -146,8 +146,8 @@ SpectreportGithub.getUsage = function () {
             '',
             '[bold]{Optional Options:}',
             '',
-            '   [bold]{ghQuiet}     Suppress output to console',
-            '   [bold]{ghFailOnly}  Only send messages if a failure is detected'
+            '   [bold]{ghQuiet}              Suppress output to console',
+            '   [bold]{ghFailOnly}           Only send messages if a failure is detected'
         ]
     };
     console.log(cla.getUsage(usage));

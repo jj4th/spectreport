@@ -29,8 +29,9 @@ const pluginFixtures = {
     },
 
     noCredsError: new RegExp('^Github: No valid credentials specified.$'),
-    githubError: new RegExp('^Github: Error while posting results\n404 Github Not Found!'),
-    requestError: '404 Github Not Found!',
+    postError: new RegExp('^Github: Error while posting results\n404 Github Not Found!'),
+    githubError: '404 Github Not Found!',
+    consoleSuccess: 'Github: Results reported to github!',
 
     repoUrl: 'https://user:pass@api.github.com/repos/user/repository/issues/7/comments',
     repoUrlApiKey: 'https://api.github.com/repos/user/repository/issues/7/comments',
