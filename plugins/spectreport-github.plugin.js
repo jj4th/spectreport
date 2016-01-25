@@ -3,11 +3,11 @@ var request = require('sync-request');
 function buildRepoUrl(options) {
     var repoUrl = 'https://';
 
-    if (options.user && options.pass) {
-        repoUrl += options.user + ':' + options.pass + '@';
+    if (options.ghUser && options.ghPass) {
+        repoUrl += options.ghUser + ':' + options.ghPass + '@';
     }
-    repoUrl += 'api.github.com/repos/' + options.repo +
-        '/issues/' + options.id + '/comments';
+    repoUrl += 'api.github.com/repos/' + options.ghRepo +
+        '/issues/' + options.ghId + '/comments';
 
     return repoUrl;
 }
@@ -54,14 +54,14 @@ function buildGithubBody(summary, results, reportUrl, failStatus) {
  * @typedef SpectreportGithubOptions
  * @memberof SpectreportGithub
  * @type {Object}
- * @property {String} reportUrl - The base url for the Spectreport report
- * @property {String} repo - The base repository to report to, in the form of 'user-or-org/reponame'
- * @property {Number} id - The id of the issue or pull request to post the message to
- * @property {String} [user] - Username for authentication with github
- * @property {String} [pass] - Password for authentication with github
- * @property {String} [apiKey] - Api key for alternative authenication with github
- * @property {Boolean} [quiet] - Suppress output to stdout
- * @property {Boolean} [onlyFail] - Only post report on test failure
+ * @property {String} ghReportUrl - The base url for the Spectreport report
+ * @property {String} ghRepo - The base repository to report to, in the form of 'user-or-org/reponame'
+ * @property {Number} ghId - The id of the issue or pull request to post the message to
+ * @property {String} [ghUser] - Username for authentication with github
+ * @property {String} [ghPass] - Password for authentication with github
+ * @property {String} [ghApiKey] - Api key for alternative authenication with github
+ * @property {Boolean} [ghQuiet] - Suppress output to stdout
+ * @property {Boolean} [ghOnlyFail] - Only post report on test failure
  */
 
 /**
@@ -73,10 +73,10 @@ function buildGithubBody(summary, results, reportUrl, failStatus) {
  *   failed cases (if any), and a link to the overall Spectreport report.
  *
  *   This plugin supports two authentication methods.  If you want to authenticate
- *   with username and password, provide the 'user' and 'pass' options.  If you want to
- *   authenticate via an api key or token, provide the 'apiKey' option.
+ *   with username and password, provide the 'ghUser' and 'ghPass' options.  If you want to
+ *   authenticate via an api key or token, provide the 'ghApiKey' option.
  *
- *   The 'repo' and 'id' are required options and will be used to construct the github
+ *   The 'ghRepo' and 'ghId' are required options and will be used to construct the github
  *   api endpoint url as follows:
  *   'https://api.github.com/repos/<options.repo>/issues/<options.id>/comments'
  */
@@ -84,12 +84,12 @@ function SpectreportGithub(options, reporter) {
     var failStatus = reporter.constructor.Test.TEST_FAIL;
     var summary = reporter.summary();
     var results = reporter.results;
-    var reportUrl = options.reportUrl;
+    var reportUrl = options.ghReportUrl;
 
     var githubUrl = buildRepoUrl(options);
 
-    if (summary.failures === 0 && options.onlyFail) {
-        if (!options.quiet) {
+    if (summary.failures === 0 && options.ghOnlyFail) {
+        if (!options.ghQuiet) {
             console.log('Github: No failures reported.');
         }
         return false;
@@ -105,9 +105,9 @@ function SpectreportGithub(options, reporter) {
         }
     };
 
-    if (options.apiKey) {
-        post.headers.Authorization = 'token ' + options.apiKey;
-    } else if (!options.user || !options.pass) {
+    if (options.ghApiKey) {
+        post.headers.Authorization = 'token ' + options.ghApiKey;
+    } else if (!options.ghUser || !options.ghPass) {
         throw new Error('Github: No valid credentials specified.');
     }
 
@@ -119,7 +119,7 @@ function SpectreportGithub(options, reporter) {
         throw ex;
     }
 
-    if (!options.quiet) {
+    if (!options.ghQuiet) {
         console.log('Github: Results reported to github!');
     }
     return true;
@@ -135,19 +135,19 @@ SpectreportGithub.getUsage = function () {
             '',
             '[bold]{Authentication Options:}',
             '',
-            '   Either    [bold]{user}:username [bold]{pass:}password',
-            '   Or        [bold]{apiKey}:YOUR_API_KEY',
+            '   Either                [bold]{ghUser}:username [bold]{ghPass:}password',
+            '   Or                    [bold]{ghApiKey}:YOUR_API_KEY',
             '',
             '[bold]{Required Options:}',
             '',
-            '   [bold]{reportUrl}:http://server/path/report.html   Url to the Spectreport report.',
-            '   [bold]{repo}:user/repository                       Github repository slug.',
-            '   [bold]{id}:37                                      The Issue or Pull Request id.',
+            '   [bold]{ghReportUrl}:http://server/path/report.html   Url to the Spectreport report.',
+            '   [bold]{ghRepo}:user/repository                       Github repository slug.',
+            '   [bold]{ghId}:37                                      The Issue or Pull Request id.',
             '',
             '[bold]{Optional Options:}',
             '',
-            '   [bold]{quiet}     Suppress output to console',
-            '   [bold]{failOnly}  Only send messages if a failure is detected'
+            '   [bold]{ghQuiet}              Suppress output to console',
+            '   [bold]{ghFailOnly}           Only send messages if a failure is detected'
         ]
     };
     console.log(cla.getUsage(usage));

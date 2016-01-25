@@ -5,8 +5,8 @@
         "suites":[],
         "tests":[{
             "status":0,
-            "title":"Test-9",
-            "fullTitle":"Suite-5 - Child-5 - Test-9",
+            "title":"Should be Test-9",
+            "fullTitle":"Suite-5 - Child-5 - Should be Test-9",
             "duration":20,
             "error": { "stack": "There was an error!" }
         }],
@@ -21,8 +21,8 @@
     }],
     "tests":[{
         "status":1,
-        "title":"Test-10",
-        "fullTitle":"Suite-5 - Test-10",
+        "title":"Should not be Test-10",
+        "fullTitle":"Suite-5 - Should not be Test-10",
         "duration":5,
         "error":null
     }],
