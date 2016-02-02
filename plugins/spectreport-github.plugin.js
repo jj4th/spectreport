@@ -1,4 +1,30 @@
 var request = require('sync-request');
+var netrc = require('netrc');
+
+function parseNetrc(options) {
+    var netrcObj, newOptions = {};
+
+    if (options.ghNetrc && options.ghNetrc.length) {
+        netrcObj = netrc(options.ghNetrc);
+    }
+    else {
+        netrcObj = netrc();
+    }
+
+    // Create a new copy of the options with ghUser and ghPass
+    if (netrcObj && netrcObj['github.com']) {
+        for (var key in options) {
+            newOptions[key] = options[key];
+        }
+        newOptions.ghUser = netrcObj['github.com'].login;
+        newOptions.ghPass = netrcObj['github.com'].password;
+    }
+    else {
+        newOptions = options;
+    }
+
+    return newOptions;
+}
 
 function buildRepoUrl(options) {
     var repoUrl = 'https://';
@@ -60,6 +86,7 @@ function buildGithubBody(summary, results, reportUrl, failStatus) {
  * @property {String} [ghUser] - Username for authentication with github
  * @property {String} [ghPass] - Password for authentication with github
  * @property {String} [ghApiKey] - Api key for alternative authenication with github
+ * @property {String} [ghNetrc] - [~/.netrc] Use the netrc file entry for github.com authentication
  * @property {Boolean} [ghQuiet] - Suppress output to stdout
  * @property {Boolean} [ghOnlyFail] - Only post report on test failure
  */
@@ -86,8 +113,6 @@ function SpectreportGithub(options, reporter) {
     var results = reporter.results;
     var reportUrl = options.ghReportUrl;
 
-    var githubUrl = buildRepoUrl(options);
-
     if (summary.failures === 0 && options.ghOnlyFail) {
         if (!options.ghQuiet) {
             console.log('Github: No failures reported.');
@@ -105,11 +130,17 @@ function SpectreportGithub(options, reporter) {
         }
     };
 
+    if (Object.keys(options).indexOf('ghNetrc') !== -1) {
+        options = parseNetrc(options);
+    }
+
     if (options.ghApiKey) {
         post.headers.Authorization = 'token ' + options.ghApiKey;
-    } else if (!options.ghUser || !options.ghPass) {
+    } else if (!(options.ghUser && options.ghPass)) {
         throw new Error('Github: No valid credentials specified.');
     }
+
+    var githubUrl = buildRepoUrl(options);
 
     try {
         var response = request('POST', githubUrl, post);
@@ -135,8 +166,10 @@ SpectreportGithub.getUsage = function () {
             '',
             '[bold]{Authentication Options:}',
             '',
-            '   Either                [bold]{ghUser}:username [bold]{ghPass:}password',
-            '   Or                    [bold]{ghApiKey}:YOUR_API_KEY',
+            '   Either           [bold]{ghUser}:username             Github username and password.',
+            '                    [bold]{ghPass:}password',
+            '   Or               [bold]{ghApiKey}:YOUR_API_KEY       A github API key.',
+            '   Or               [bold]{ghNetrc}:path/to/.netrc      [~/.netrc] Use specified netrc.',
             '',
             '[bold]{Required Options:}',
             '',
@@ -146,8 +179,8 @@ SpectreportGithub.getUsage = function () {
             '',
             '[bold]{Optional Options:}',
             '',
-            '   [bold]{ghQuiet}              Suppress output to console',
-            '   [bold]{ghFailOnly}           Only send messages if a failure is detected'
+            '   [bold]{ghQuiet}         Suppress output to console',
+            '   [bold]{ghFailOnly}      Only send messages if a failure is detected'
         ]
     };
     console.log(cla.getUsage(usage));

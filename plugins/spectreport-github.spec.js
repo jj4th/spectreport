@@ -21,7 +21,7 @@ function trapConsole(func) {
 }
 
 describe('Plugin - Github', () => {
-    let options, reporter, plugin, usage, request, getBody, summary, response;
+    let options, reporter, plugin, usage, request, getBody, summary, response, netrc;
 
     before(() => {
         summary = sinon.mock().returns(fixtures.results.stats);
@@ -38,10 +38,12 @@ describe('Plugin - Github', () => {
         };
 
         request = sinon.mock().returns(response);
+        netrc = sinon.mock().returns(fixtures.netrc);
 
         // Rewire stub dependencies
         plugin = proxyquire(path.join(__dirname, 'spectreport-github.plugin'), {
-            'sync-request': request
+            'sync-request': request,
+            'netrc': netrc
         });
 
         // Trap the console on the plugin and the usage function
@@ -54,6 +56,7 @@ describe('Plugin - Github', () => {
             request.reset();
             getBody.reset();
             summary.reset();
+            netrc.reset();
         });
 
         it('should properly invoke the summary function', function () {
@@ -76,6 +79,49 @@ describe('Plugin - Github', () => {
             let call = request.args[0];
 
             expect(call[2].headers).to.not.have.property('Authorization');
+        });
+
+        it('should call netrc correctly with default netrc', () => {
+            options = fixtures.optionsNetrcDefault;
+            netrc.returns(fixtures.netrcDefault);
+            plugin(options, reporter);
+            let call = netrc.args[0];
+
+            expect(call[0]).to.be.undefined;
+        });
+
+        it('should build the proper github url with default netrc', () => {
+            options = fixtures.optionsNetrcDefault;
+            netrc.returns(fixtures.netrcDefault);
+            plugin(options, reporter);
+            let call = request.args[0];
+
+            expect(call[1]).to.eql(fixtures.repoUrlNetrcDefault);
+        });
+
+        it('should call netrc correctly with specific netrc', () => {
+            options = fixtures.optionsNetrc;
+            netrc.returns(fixtures.netrc);
+            plugin(options, reporter);
+            let call = netrc.args[0];
+
+            expect(call[0]).to.eql(options.ghNetrc);
+        });
+
+        it('should build the proper github url with specified netrc', () => {
+            options = fixtures.optionsNetrc;
+            netrc.returns(fixtures.netrc);
+            plugin(options, reporter);
+            let call = request.args[0];
+
+            expect(call[1]).to.eql(fixtures.repoUrlNetrc);
+        });
+
+        it('should report error when no matching credentials in the netrc', () => {
+            options = fixtures.optionsNetrc;
+            netrc.returns({});
+
+            expect(plugin.bind(plugin, options, reporter)).to.throw(fixtures.noCredsError);
         });
 
         it('should build the proper github url with API Key', () => {
