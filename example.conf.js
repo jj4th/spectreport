@@ -1,5 +1,5 @@
 var config = {
-    noOuput: true,
+    noOutput: true,
     plugins: ['plugins/spectreport-github.plugin.js'],
     pluginOpts: {
         ghOnlyFail:true,
