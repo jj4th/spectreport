@@ -4,6 +4,19 @@ var commandLineArgs = require('command-line-args');
 var fs = require('fs-extra');
 var path = require('path');
 
+var getBuiltinPlugins = function () {
+    var list = fs.readdirSync(path.join(__dirname, '../plugins'));
+    return list.reduce(function (arr, pluginFile) {
+        var match = pluginFile.match(/spectreport-(.*).plugin.js/);
+        if(match) {
+            arr.push(match[1]);
+        }
+        return arr;
+    }, []);
+}
+
+var builtinPlugins = getBuiltinPlugins();
+
 // CLI Options
 var cla = commandLineArgs([
   { name: 'configFile', alias: 'c', type: String,
@@ -43,13 +56,18 @@ var usage = {
         '',
         '$ node spectreport [bold]{-c} "spectreport.conf.json"',
         '',
-        '  The config file should export a single object with key:value pairs corresponding' +
+        'The config file should export a single object with key:value pairs corresponding' +
         ' to the long-form option name. [bold]{--plugins} should be specified as an array of String' +
         ' arguments in the same format as described below. [bold]{--pluginOpts} should be specified as' +
         ' an object with key:value pairs. Flags such as [bold]{--quiet} should be a key:value pair with' +
-        ' the value set to [bold]{true}.'
+        ' the value set to [bold]{true}.',
+        '',
+        'Built-in plugins may be specified using only their shortname.  Currently built-in plugins are:'
     ]
 }
+builtinPlugins.forEach(function (item) {
+    usage.synopsis.push('  [bold]{' + item + '}');
+});
 
 // Utility Functions
 var parsePluginOpts = function (pluginOpts) {
@@ -65,10 +83,30 @@ var parsePluginOpts = function (pluginOpts) {
     }
 }
 
+var loadPlugin = function (pluginFile) {
+    var plugin = null;
+    var pluginPath = path.resolve('.', pluginFile);
+
+    if (builtinPlugins.indexOf(pluginFile) !== -1) {
+        pluginPath = '../plugins/spectreport-' + pluginFile + '.plugin.js';
+        pluginPath = path.join(__dirname, pluginPath);
+    }
+
+    try {
+        plugin = require(pluginPath);
+    } catch (ex) {
+        ex.message = 'Error loading plugin (' + path.basename(pluginFile) + '):\n' + ex.message;
+        throw ex;
+    }
+
+    return plugin;
+}
+
 var runPlugins = function (reporter, plugins, pluginOpts) {
     plugins.forEach(function (pluginFile) {
+        var plugin = loadPlugin(pluginFile);
+
         try {
-            var plugin = require(path.resolve('.', pluginFile));
             plugin(pluginOpts, reporter);
         } catch (ex) {
             ex.message = 'Error running plugin (' + path.basename(pluginFile) + '):\n' + ex.message;
@@ -99,7 +137,7 @@ if (options.help) {
 }
 
 if (options.pluginUsage) {
-    var plugin = require(path.resolve('.', options.pluginUsage));
+    var plugin = loadPlugin(options.pluginUsage);
     plugin.getUsage();
     return 0;
 }
