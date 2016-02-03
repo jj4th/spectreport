@@ -1,6 +1,6 @@
 {
   "name": "spectreport",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A generator of beutiful HTML test reports",
   "main": "./lib/spectreport.min.js",
   "scripts": {
@@ -87,6 +87,7 @@
     "command-line-args": "^2.1.0",
     "dot": "^1.0.3",
     "fs-extra": "^0.18.2",
+    "netrc": "^0.1.4",
     "sync-request": "^3.0.0"
   }
 }

@@ -22,10 +22,34 @@ const pluginFixtures = {
         ghReportUrl: 'http://jenkins.internal/job/382/report.html',
         ghApiKey: 'A6B5C4DE3F21'
     },
+    optionsNetrc: {
+        ghId: 7,
+        ghRepo: 'user/repository',
+        ghReportUrl: 'http://jenkins.internal/job/382/report.html',
+        ghNetrc: 'path/to/.netrc'
+    },
+    optionsNetrcDefault: {
+        ghId: 7,
+        ghRepo: 'user/repository',
+        ghReportUrl: 'http://jenkins.internal/job/382/report.html',
+        ghNetrc: ''
+    },
     optionsNoCreds: {
         ghId: 7,
         ghRepo: 'user/repository',
         ghReportUrl: 'http://jenkins.internal/job/382/report.html'
+    },
+    netrc: {
+        'github.com': {
+            login: 'netrcUser',
+            password: 'netrcPass'
+        }
+    },
+    netrcDefault: {
+        'github.com': {
+            login: 'netrcDefaultUser',
+            password: 'netrcDefaultPass'
+        }
     },
 
     noCredsError: new RegExp('^Github: No valid credentials specified.$'),
@@ -34,6 +58,8 @@ const pluginFixtures = {
     consoleSuccess: 'Github: Results reported to github!',
 
     repoUrl: 'https://user:pass@api.github.com/repos/user/repository/issues/7/comments',
+    repoUrlNetrc: 'https://netrcUser:netrcPass@api.github.com/repos/user/repository/issues/7/comments',
+    repoUrlNetrcDefault: 'https://netrcDefaultUser:netrcDefaultPass@api.github.com/repos/user/repository/issues/7/comments',
     repoUrlApiKey: 'https://api.github.com/repos/user/repository/issues/7/comments',
 
     message: '#### Test passed :) ####\nLink: http://jenkins.internal/job/382/report.html\n' +
