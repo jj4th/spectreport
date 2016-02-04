@@ -41,7 +41,8 @@ function buildRepoUrl(options) {
 function buildFailureLinks(results, reportUrl, failStatus) {
     var failureLinks = [];
     if (results.tests) {
-        for (var test of results.tests) {
+        for (var i = 0; i < results.tests.length; i++) {
+            var test = results.tests[i];
             if (test.status === failStatus) {
                 var link = '[' + test.fullTitle + '](' +
                     reportUrl + '#' + test.hash + ')';
@@ -50,7 +51,8 @@ function buildFailureLinks(results, reportUrl, failStatus) {
         }
     }
     if (results.suites) {
-        for (var suite of results.suites) {
+        for (var j = 0; j < results.suites.length; j++) {
+            var suite = results.suites[j];
             var links = buildFailureLinks(suite, reportUrl, failStatus);
             if (links.length) {
                 failureLinks.push(links);
