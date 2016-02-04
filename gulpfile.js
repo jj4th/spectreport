@@ -89,13 +89,13 @@ gulp.task('build', ['lint-src', 'clean', 'assets', 'plugins'], function(done) {
   mkdirp.sync(destinationFolder);
   rollup.rollup({
     entry: config.entryFileName + '.js',
+    external: ['dot', 'fs-extra', 'babel-runtime']
   }).then(function(bundle) {
     var res = bundle.generate({
       sourceMap: 'inline',
       sourceMapFile: exportFileName + '.js',
       format: 'umd',
-      moduleName: config.exportVarName,
-      external: ['dot', 'fs-extra', 'babel-runtime']
+      moduleName: config.exportVarName
     });
 
     $.file(exportFileName + '.js', res.code, { src: true })
