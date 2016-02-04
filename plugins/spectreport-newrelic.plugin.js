@@ -4,7 +4,8 @@ var request = require('sync-request');
 // heuristically, your mileage may vary.
 function countTestCharge(body, results) {
     if (results.tests) {
-        for (var test of results.tests) {
+        for (var i = 0; i < results.tests.length; i++) {
+            var test = results.tests[i];
             var title = test.title.toLowerCase();
             if (title.indexOf('should not ') === 0) {
                 body.negativeTests++;
@@ -14,7 +15,8 @@ function countTestCharge(body, results) {
         }
     }
     if (results.suites) {
-        for (var suite of results.suites) {
+        for (var j = 0; j < results.suites.length; j++) {
+            var suite = results.suites[j];
             countTestCharge(body, suite);
         }
     }
