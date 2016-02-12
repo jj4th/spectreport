@@ -10,3 +10,4 @@ Usage information and instructions can be obtained from the spectreport cli:
 $ npm install -g spectreport
 $ spectreport -h
 ```
+
