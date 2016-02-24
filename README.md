@@ -3,7 +3,7 @@
 Spectreport
 ===========
 
-A spec reporter for protractor/mocha that generates nice HTML reports.
+A generator for nice HTML test reports.
 
 ## Usage ##
 Usage information and instructions, including a list of built-in plugins, can be obtained from the spectreport cli help option:
@@ -19,4 +19,9 @@ Information about the built-in plugins and their options can be obtained by:
 $ spectreport -u plugin-name
 ```
 
+## Generating Test Results ##
+In order to run Spectreport, you'll need some test results!  The easiest way to get these is to use the appropriate reporter plugin for your test runner.  This project currently maintains plugins for the following test runners:
 
+| Runner | Reporter |
+| --- | --- |
+| Mocha <br> [http://mochajs.org](http://mochajs.org/) | Mocha-Spectreport-Reporter <br> [https://git.io/v2WaG](https://git.io/v2WaG) |
