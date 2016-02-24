@@ -7,4 +7,14 @@ before_install:
 install:
 - travis_retry npm install
 after_success:
-- gulp coverage
+- gulp coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+before_deploy:
+- gulp build
+deploy:
+  provider: npm
+  email: j.andrichak@rackspace.com
+  skip_Cleanup: true
+  on:
+    tags: true
+  api_key:
+    secure: GmHP5mJBP0d6N3yMFGbt2z053B3pC/vyVCWmxy5CYTXO+V9SNdljKtdwktUmMwwnd4+Rgd2BHZUd3skhfxImhOnYD54EQSEynsGzHjRpu+pusfeNOiKhi1bLcqukBrZMbMW5pDbhBn4VQZtKSyOUPIna5WIaG1x+0BwJxFwMmps=

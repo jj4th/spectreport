@@ -1,0 +1,12 @@
+.eslintrc
+.gitignore
+.travis.yml
+coverage
+demo
+example.conf.js
+gulpfile.js
+spectreport.conf.js
+src
+test
+plugins/*.spec.js
+plugins/*.fixtures.js
