@@ -7,6 +7,7 @@
     <title>Report Test Results</title>
     <!-- load MUI -->
     <link href="https://cdn.muicss.com/mui-0.1.22-rc1/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.muicss.com/mui-0.1.22-rc1/js/mui.min.js"></script>
     <style type="text/css">
         div.test > div, div.suiteDetails > div {
@@ -157,7 +158,12 @@
         <div class="suite {{=(suite.stats.failures ? 'failed' : '' )}} {{=(indent === 0 ? 'expanded' : '')}}">
             <div class="suiteDetails mui-row mui-text-caption">
                 <div class="suiteName mui-col-sm-6 mui-text-body1" title="{{=suite.title}}">
-                    <div class="{{=(indent > 0 ? 'indent' : '')}}" style="margin-left:{{=indent}}px;">{{=suite.title}}</div>
+                    <div class="{{=(indent > 0 ? 'indent' : '')}}" style="margin-left:{{=indent}}px;">
+                        {{ if (suite.file) { }}
+                            <i class="fa fa-file-o" title="{{=suite.file}}"></i>
+                        {{ } }}
+                        {{=suite.title}}
+                    </div>
                 </div>
                 <div class="suiteDuration mui-col-sm-2">
                     <div class="left-half">

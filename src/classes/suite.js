@@ -4,6 +4,7 @@ import Test from './test';
 class Suite {
     constructor(suite, parent) {
         this.title = suite.title;
+        this.file = suite.file;
         this.suites = [];
         this.tests = [];
         this.parent = parent;
@@ -58,6 +59,7 @@ class Suite {
         // Generate a clean, shallow copy without the parent
         let copy = {
             title: this.title,
+            file: this.file,
             suites: this.suites,
             tests: this.tests,
             stats: this.stats

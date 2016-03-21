@@ -69,6 +69,7 @@ const fixtures = {
     },
     suite: {
         title: 'Test Suite',
+        file: 'testFile.js',
         stats: {},
         hasTests: () => { return true; }
     },

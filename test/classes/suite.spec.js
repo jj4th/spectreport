@@ -12,6 +12,7 @@ describe('Suite class', () => {
     describe('initialize', () => {
         it('should properly initialize a suite object', () => {
             expect(suite1).to.have.property('title', f.suite.title);
+            expect(suite1).to.have.property('file', f.suite.file);
             expect(suite1).to.have.property('suites').to.be.a('array');
             expect(suite1).to.have.property('tests').to.be.a('array');
             expect(suite1).to.have.property('parent', f.suiteParent);
