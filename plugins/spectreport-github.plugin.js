@@ -1,4 +1,4 @@
-var request = require('sync-request');
+var request = require('request');
 var netrc = require('netrc');
 
 function parseNetrc(options) {
@@ -97,6 +97,7 @@ function buildGithubBody(summary, results, reportUrl, failStatus) {
  * @function
  * @param {SpectreportGithubOptions} options - Options for the plugin
  * @param {Object} reporter - An instance of the Spectreport class
+ * @param {Function} done - Callback for the plugin when done.
  * @description
  *   Post a success or failure message to github, along with links to the specific
  *   failed cases (if any), and a link to the overall Spectreport report.
@@ -109,7 +110,7 @@ function buildGithubBody(summary, results, reportUrl, failStatus) {
  *   api endpoint url as follows:
  *   'https://api.github.com/repos/<options.repo>/issues/<options.id>/comments'
  */
-function SpectreportGithub(options, reporter) {
+function SpectreportGithub(options, reporter, done) {
     var failStatus = reporter.constructor.Test.TEST_FAIL;
     var summary = reporter.summary();
     var results = reporter.results;
@@ -123,6 +124,7 @@ function SpectreportGithub(options, reporter) {
     }
 
     var post = {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'User-Agent': 'git CL - node'
@@ -142,20 +144,18 @@ function SpectreportGithub(options, reporter) {
         throw new Error('Github: No valid credentials specified.');
     }
 
-    var githubUrl = buildRepoUrl(options);
+    post.uri = buildRepoUrl(options);
 
-    try {
-        var response = request('POST', githubUrl, post);
-        response.getBody('utf-8');
-    } catch (ex) {
-        ex.message = 'Github: Error while posting results\n' + ex.message;
-        throw ex;
-    }
+    request(post, function (error) {
+        if(error) {
+            throw new Error('Github: Error while posting results\n' + error);
+        }
 
-    if (!options.ghQuiet) {
-        console.log('Github: Results reported to github!');
-    }
-    return true;
+        if (!options.ghQuiet) {
+            console.log('Github: Results reported to github!');
+        }
+        done();
+    });
 }
 
 SpectreportGithub.getUsage = function () {

@@ -21,7 +21,7 @@ function trapConsole(func) {
 }
 
 describe('Plugin - NewRelic', () => {
-    let options, reporter, plugin, usage, request, getBody, summary, response;
+    let options, reporter, plugin, usage, request, summary, error, done;
 
     before(() => {
         summary = sinon.mock().returns(fixtures.results.stats);
@@ -31,16 +31,15 @@ describe('Plugin - NewRelic', () => {
         };
 
         options = fixtures.options;
-        getBody = sinon.mock();
-        response = {
-            getBody: getBody
-        };
 
-        request = sinon.mock().returns(response);
+        request = sinon.spy(function () {
+            arguments[1](error, null, null);
+        });
+        done = sinon.spy();
 
         // Rewire stub dependencies
         plugin = proxyquire(path.join(__dirname, 'spectreport-newrelic.plugin'), {
-            'sync-request': request
+            'request': request
         });
 
         // Trap the console on the plugin and the usage function
@@ -51,52 +50,59 @@ describe('Plugin - NewRelic', () => {
     describe('General', () => {
         beforeEach(() => {
             request.reset();
-            getBody.reset();
+            done.reset();
             summary.reset();
+            error = undefined;
         });
 
         it('should properly invoke the summary function', function () {
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             expect(summary).to.have.been.calledOnce;
         });
 
         it('should have the proper newRelic url', () => {
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[0]).to.eql('POST');
-            expect(call[1]).to.eql(fixtures.options.nrCollectorUrl);
+            expect(call[0].method).to.eql('POST');
+            expect(call[0].uri).to.eql(fixtures.options.nrCollectorUrl);
         });
 
         it('should have the auth header with Insert Key', () => {
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[2].headers).to.have.property('X-Insert-Key', fixtures.options.nrInsertKey);
+            expect(call[0].headers).to.have.property('X-Insert-Key', fixtures.options.nrInsertKey);
         });
 
         it('should have the expected results in the post body', () => {
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[2].json).to.eql(fixtures.postBody);
+            expect(call[0].json).to.eql(fixtures.postBody);
         });
 
         it('should log to console on success', () => {
-            let log = plugin(options, reporter);
+            let log = plugin(options, reporter, done);
 
             expect(log).to.have.been.calledWith(fixtures.consoleSuccess);
         });
 
+        it('should call done() method on success', () => {
+            plugin(options, reporter, done);
+
+            expect(done).to.have.been.calledOnce;
+        });
+
         it('should not log to console on quiet', () => {
             options.nrQuiet = true;
-            let log = plugin(options, reporter);
+            let log = plugin(options, reporter, done);
 
             expect(log).to.have.not.been.called;
         });
 
         it('should report error when the newrelic API fails', () => {
-            request.throws(new Error(fixtures.newRelicError));
+            error = fixtures.newRelicError;
 
             expect(plugin.bind(plugin, options, reporter)).to.throw(fixtures.postError);
         });
