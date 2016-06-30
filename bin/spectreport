@@ -106,8 +106,14 @@ var runPlugins = function (reporter, plugins, pluginOpts) {
     plugins.forEach(function (pluginFile) {
         var plugin = loadPlugin(pluginFile);
 
+        var cb = function () {
+            cb.done = true;
+        }
+
         try {
-            plugin(pluginOpts, reporter);
+            // Busy wait for plugin, to support asynchronous plugins
+            plugin(pluginOpts, reporter, cb);
+            while(!cb.done);
         } catch (ex) {
             ex.message = 'Error running plugin (' + path.basename(pluginFile) + '):\n' + ex.message;
             throw ex;

@@ -21,7 +21,7 @@ function trapConsole(func) {
 }
 
 describe('Plugin - Github', () => {
-    let options, reporter, plugin, usage, request, getBody, summary, response, netrc;
+    let options, reporter, plugin, usage, request, summary, netrc, error, done;
 
     before(() => {
         summary = sinon.mock().returns(fixtures.results.stats);
@@ -32,17 +32,17 @@ describe('Plugin - Github', () => {
         };
 
         options = fixtures.options;
-        getBody = sinon.mock();
-        response = {
-            getBody: getBody
-        };
 
-        request = sinon.mock().returns(response);
+        request = sinon.spy(function () {
+            arguments[1](error, null, null);
+        });
+
         netrc = sinon.mock().returns(fixtures.netrc);
+        done = sinon.spy();
 
         // Rewire stub dependencies
         plugin = proxyquire(path.join(__dirname, 'spectreport-github.plugin'), {
-            'sync-request': request,
+            'request': request,
             'netrc': netrc
         });
 
@@ -54,37 +54,38 @@ describe('Plugin - Github', () => {
     describe('General', () => {
         beforeEach(() => {
             request.reset();
-            getBody.reset();
+            done.reset();
             summary.reset();
             netrc.reset();
+            error = undefined;
         });
 
         it('should properly invoke the summary function', function () {
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             expect(summary).to.have.been.calledOnce;
         });
 
         it('should build the proper github url with user/pass', () => {
             options = fixtures.options;
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[0]).to.eql('POST');
-            expect(call[1]).to.eql(fixtures.repoUrl);
+            expect(call[0].method).to.eql('POST');
+            expect(call[0].uri).to.eql(fixtures.repoUrl);
         });
 
         it('should not have the the auth header with user/pass', () => {
             options = fixtures.options;
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[2].headers).to.not.have.property('Authorization');
+            expect(call[0].headers).to.not.have.property('Authorization');
         });
 
         it('should call netrc correctly with default netrc', () => {
             options = fixtures.optionsNetrcDefault;
             netrc.returns(fixtures.netrcDefault);
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = netrc.args[0];
 
             expect(call[0]).to.be.undefined;
@@ -93,16 +94,16 @@ describe('Plugin - Github', () => {
         it('should build the proper github url with default netrc', () => {
             options = fixtures.optionsNetrcDefault;
             netrc.returns(fixtures.netrcDefault);
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[1]).to.eql(fixtures.repoUrlNetrcDefault);
+            expect(call[0].uri).to.eql(fixtures.repoUrlNetrcDefault);
         });
 
         it('should call netrc correctly with specific netrc', () => {
             options = fixtures.optionsNetrc;
             netrc.returns(fixtures.netrc);
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = netrc.args[0];
 
             expect(call[0]).to.eql(options.ghNetrc);
@@ -111,10 +112,10 @@ describe('Plugin - Github', () => {
         it('should build the proper github url with specified netrc', () => {
             options = fixtures.optionsNetrc;
             netrc.returns(fixtures.netrc);
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[1]).to.eql(fixtures.repoUrlNetrc);
+            expect(call[0].uri).to.eql(fixtures.repoUrlNetrc);
         });
 
         it('should report error when no matching credentials in the netrc', () => {
@@ -126,25 +127,31 @@ describe('Plugin - Github', () => {
 
         it('should build the proper github url with API Key', () => {
             options = fixtures.optionsApiKey;
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[0]).to.eql('POST');
-            expect(call[1]).to.eql(fixtures.repoUrlApiKey);
+            expect(call[0].method).to.eql('POST');
+            expect(call[0].uri).to.eql(fixtures.repoUrlApiKey);
         });
 
         it('should have the auth header with API Key', () => {
             options = fixtures.optionsApiKey;
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[2].headers).to.have.property('Authorization', 'token ' + fixtures.optionsApiKey.ghApiKey);
+            expect(call[0].headers).to.have.property('Authorization', 'token ' + fixtures.optionsApiKey.ghApiKey);
         });
 
         it('should log to console on success', () => {
-            let log = plugin(options, reporter);
+            let log = plugin(options, reporter, done);
 
             expect(log).to.have.been.calledWith(fixtures.consoleSuccess);
+        });
+
+        it('should call done() method on success', () => {
+            plugin(options, reporter, done);
+
+            expect(done).to.have.been.calledOnce;
         });
 
         it('should report error when no valid credentials supplied', () => {
@@ -155,7 +162,7 @@ describe('Plugin - Github', () => {
 
         it('should report error when the github api call fails', () => {
             options = fixtures.options;
-            request.throws(new Error(fixtures.githubError));
+            error = fixtures.githubError;
 
             expect(plugin.bind(plugin, options, reporter)).to.throw(fixtures.postError);
         });
@@ -163,29 +170,29 @@ describe('Plugin - Github', () => {
 
     describe('Success Report', () => {
         beforeEach(() => {
-            request.returns(response);
             request.reset();
-            getBody.reset();
+            done.reset();
             summary.reset();
+            error = undefined;
         });
 
         it('should output the expected body to github', () => {
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[2]).to.have.property('json').eql({body: fixtures.message});
+            expect(call[0]).to.have.property('json').eql({body: fixtures.message});
         });
 
         it('should not send report on failOnly', () => {
             options.ghOnlyFail = true;
-            plugin(options, reporter);
+            plugin(options, reporter, done);
 
             expect(request).to.not.have.been.called;
         });
 
         it('should not log to console on quiet', () => {
             options.ghQuiet = true;
-            let log = plugin(options, reporter);
+            let log = plugin(options, reporter, done);
 
             expect(log).to.not.have.been.called;
         });
@@ -201,27 +208,27 @@ describe('Plugin - Github', () => {
             };
         });
         beforeEach(() => {
-            request.returns(response);
             request.reset();
-            getBody.reset();
+            done.reset();
             summary.reset();
+            error = undefined;
         });
 
         it('should output the expected body to github', () => {
-            plugin(options, reporter);
+            plugin(options, reporter, done);
             let call = request.args[0];
 
-            expect(call[2]).to.have.property('json').eql({body: fixtures.messageFailure});
+            expect(call[0]).to.have.property('json').eql({body: fixtures.messageFailure});
         });
         it('should send report on failOnly', () => {
             options.ghOnlyFail = true;
-            plugin(options, reporter);
+            plugin(options, reporter, done);
 
             expect(request).to.have.been.calledOnce;
         });
         it('should not log to console on quiet', () => {
             options.ghQuiet = true;
-            let log = plugin(options, reporter);
+            let log = plugin(options, reporter, done);
 
             expect(log).to.not.have.been.called;
         });

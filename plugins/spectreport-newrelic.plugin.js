@@ -1,4 +1,4 @@
-var request = require('sync-request');
+var request = require('request');
 
 // Our newRelic reporting wants to track positive and negative test cases
 // heuristically, your mileage may vary.
@@ -53,10 +53,11 @@ function buildTestEvent(eventType, product, environment, summary, results) {
  * @function
  * @param {SpectreportNewRelicOptions} options - Options for the plugin
  * @param {Object} reporter - An instance of the Spectreport class
+ * @param {Function} done - Callback for the plugin when done.
  * @description
  *
  */
-function SpectreportNewRelic(options, reporter) {
+function SpectreportNewRelic(options, reporter, done) {
     var summary = reporter.summary();
     var results = reporter.results;
     var insertKey = options.nrInsertKey;
@@ -66,6 +67,8 @@ function SpectreportNewRelic(options, reporter) {
     var product = options.nrProduct;
 
     var post = {
+        method: 'POST',
+        uri: collectorUrl,
         headers: {
             'Content-Type': 'application/json',
             'X-Insert-Key': insertKey
@@ -73,18 +76,16 @@ function SpectreportNewRelic(options, reporter) {
         json: buildTestEvent(eventType, product, environment, summary, results)
     };
 
-    try {
-        var response = request('POST', collectorUrl, post);
-        response.getBody('utf-8');
-    } catch (ex) {
-        ex.message = 'NewRelic: Error while posting results\n' + ex.message;
-        throw ex;
-    }
+    request(post, function (error) {
+        if(error) {
+            throw new Error('NewRelic: Error while posting results\n' + error);
+        }
 
-    if (!options.nrQuiet) {
-        console.log('NewRelic: Results reported to New Relic!');
-    }
-    return true;
+        if (!options.nrQuiet) {
+            console.log('NewRelic: Results reported to New Relic!');
+        }
+        done();
+    });
 }
 
 SpectreportNewRelic.getUsage = function () {
