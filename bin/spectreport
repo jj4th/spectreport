@@ -102,23 +102,24 @@ var loadPlugin = function (pluginFile) {
     return plugin;
 }
 
-var runPlugins = function (reporter, plugins, pluginOpts) {
-    plugins.forEach(function (pluginFile) {
-        var plugin = loadPlugin(pluginFile);
-
-        var cb = function () {
-            cb.done = true;
+var runPlugins = function (reporter, plugins, pluginOpts, done) {
+    var runNext = function () {
+        var pluginFile = plugins.shift();
+        if (!pluginFile) {
+            return done();
         }
 
+        var plugin = loadPlugin(pluginFile);
         try {
             // Busy wait for plugin, to support asynchronous plugins
-            plugin(pluginOpts, reporter, cb);
-            while(!cb.done);
+            plugin(pluginOpts, reporter, runNext);
         } catch (ex) {
             ex.message = 'Error running plugin (' + path.basename(pluginFile) + '):\n' + ex.message;
             throw ex;
         }
-    });
+    };
+
+    runNext();
 };
 
 var printSummary = function(reporter) {
@@ -164,19 +165,23 @@ if (options.configFile) {
 try {
     var reporter = new Spectreport(options);
 
+    var runSpectreport = function () {
+        // Execute the reporter
+        if (!options.noOutput) {
+            reporter.output();
+        }
+
+        // Output a summary
+        if (!(options.noOutput || options.quiet)) {
+            printSummary(reporter);
+        }
+    };
+
     // If there's plugins, run the plugins.
     if (options.plugins) {
-        runPlugins(reporter, options.plugins, options.pluginOpts);
-    }
-
-    // Execute the reporter
-    if (!options.noOutput) {
-        reporter.output();
-    }
-
-    // Output a summary
-    if (!(options.noOutput || options.quiet)) {
-        printSummary(reporter);
+        runPlugins(reporter, options.plugins, options.pluginOpts, runSpectreport);
+    } else {
+        runSpectreport();
     }
 } catch (e) {
     console.log(e.message);
