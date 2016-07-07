@@ -131,6 +131,6 @@ const pluginFixtures = {
             "timeStop":15000
         }
     }
-}
+};
 
 export default pluginFixtures;
