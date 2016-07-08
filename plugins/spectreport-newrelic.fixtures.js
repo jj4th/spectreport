@@ -68,6 +68,6 @@ const pluginFixtures = {
             "timeStop":20000
         }
     }
-}
+};
 
 export default pluginFixtures;

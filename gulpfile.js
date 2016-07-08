@@ -40,12 +40,12 @@ gulp.task('clean', function(cb) {
 });
 
 // Remove our temporary files
-gulp.task('clean-tmp', function(cb) {
+gulp.task('clean:tmp', function(cb) {
   del(['tmp'], cb);
 });
 
 // Lint our source code
-gulp.task('lint-src', function() {
+gulp.task('lint:src', function() {
   return gulp.src([srcPath, srcPluginPath])
     .pipe($.plumber())
     .pipe($.eslint({
@@ -59,7 +59,7 @@ gulp.task('lint-src', function() {
 });
 
 // Lint our test code
-gulp.task('lint-test', function() {
+gulp.task('lint:test', function() {
   return gulp.src([testPath, testPluginPath])
     .pipe($.plumber())
     .pipe($.eslint({
@@ -85,7 +85,7 @@ gulp.task('plugins', ['clean'], function () {
 });
 
 // Build two versions of the library
-gulp.task('build', ['lint-src', 'clean', 'assets', 'plugins'], function(done) {
+gulp.task('build', ['lint:src', 'clean', 'assets', 'plugins'], function(done) {
   mkdirp.sync(destinationFolder);
   rollup.rollup({
     entry: config.entryFileName + '.js',
@@ -110,7 +110,7 @@ gulp.task('build', ['lint-src', 'clean', 'assets', 'plugins'], function(done) {
   });
 });
 
-gulp.task('coverage', ['lint-src', 'lint-test'], function(done) {
+gulp.task('coverage', ['lint:src', 'lint:test'], function(done) {
   require('babel/register')({ modules: 'common' });
   gulp.src([srcPath, srcPluginPath])
     .pipe($.plumber())
@@ -124,7 +124,7 @@ gulp.task('coverage', ['lint-src', 'lint-test'], function(done) {
 });
 
 // Lint and run our tests
-gulp.task('test', ['lint-src', 'lint-test'], function() {
+gulp.task('test', ['lint:src', 'lint:test'], function() {
   require('babel/register')({ modules: 'common' });
   return test();
 });

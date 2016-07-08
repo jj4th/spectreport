@@ -166,6 +166,8 @@ SpectreportGithub.getUsage = function () {
             '$ node spectreport [bold]{-p} "plugins/spectreport-github.plugin.js' +
             ' [bold]{-x} option:value [option:value, ...]',
             '',
+            'This plugin will publish results to the appropriate Github Pull Request.',
+            '',
             '[bold]{Authentication Options:}',
             '',
             '   Either           [bold]{ghUser}:username             Github username and password.',

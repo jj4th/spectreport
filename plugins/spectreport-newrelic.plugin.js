@@ -55,6 +55,7 @@ function buildTestEvent(eventType, product, environment, summary, results) {
  * @param {Object} reporter - An instance of the Spectreport class
  * @param {Function} done - Callback for the plugin when done.
  * @description
+ *   Post a test result event to newRelic.
  *
  */
 function SpectreportNewRelic(options, reporter, done) {
@@ -95,6 +96,8 @@ SpectreportNewRelic.getUsage = function () {
         synopsis: [
             '$ node spectreport [bold]{-p} "plugins/spectreport-newrelic.plugin.js' +
             ' [bold]{-x} option:value [option:value, ...]',
+            '',
+            'This plugin will publish results as events to a New Relic account.',
             '',
             '[bold]{Required Options:}',
             '',

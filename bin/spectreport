@@ -34,7 +34,7 @@ var cla = commandLineArgs([
   { name: 'noOutput', alias: 'n', type: Boolean,
     description: 'Suppress automatic report. (Useful with plugins, implies -q)'},
   { name: 'plugins', alias: 'p', type: String, multiple: true,
-    description: 'Optional plugin(s) support.'},
+    description: 'Optional plugin(s) support.  Plugins will be run in the order listed.'},
   { name: 'pluginOpts', alias: 'x', type: String, multiple: true,
     description: 'Option(s) to pass to plugin(s) (option:value).'},
   { name: 'pluginUsage', alias: 'u', type: String,
@@ -61,6 +61,9 @@ var usage = {
         ' arguments in the same format as described below. [bold]{--pluginOpts} should be specified as' +
         ' an object with key:value pairs. Flags such as [bold]{--quiet} should be a key:value pair with' +
         ' the value set to [bold]{true}.',
+        '',
+        'NOTE: Plugins are run in the order specified, if any.  If you wish to run an input plugin, please' +
+        ' put it first in the plugin list.',
         '',
         'Built-in plugins may be specified using only their shortname.  Currently built-in plugins are:'
     ]
