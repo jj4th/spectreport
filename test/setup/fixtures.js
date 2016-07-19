@@ -10,13 +10,13 @@ const fixtures = {
     indexDefaults: {
         outputHtml: 'test/results/index.html',
         jsonDir: 'test/results',
-        template: path.join(srcPath, 'assets/results.dot'),
+        template: path.join(srcPath, 'assets/results.jade'),
         suiteTitle: 'Test Results'
     },
     indexCustom: {
         outputHtml: 'test/results/index2.html',
         jsonDir: 'test/results2',
-        template: path.join(srcPath, 'assets/results2.dot'),
+        template: path.join(srcPath, 'assets/results2.jade'),
         suiteTitle: 'Test Results 2'
     },
     aggregatorScanError: 'There was a problem aggregating the JSON results.\n',

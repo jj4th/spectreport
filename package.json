@@ -86,8 +86,8 @@
     "babel-core": "^5.8.33",
     "babel-runtime": "^6.0.14",
     "command-line-args": "^2.1.0",
-    "dot": "^1.0.3",
     "fs-extra": "^0.30.0",
+    "jade": "^1.11.0",
     "netrc": "^0.1.4",
     "request": "^2.72.0",
     "xml2js": "^0.4.16"
