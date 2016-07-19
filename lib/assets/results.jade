@@ -1,0 +1,289 @@
+
+mixin buildTest(test, indent)
+    - var testClass = 'failed';
+    - if (test.status === 2) testclass = 'pending';
+    - if (test.status === 1) testclass = 'passed';
+    div(class="mui-row test mui-text-caption #{testClass}", id="#{test.hash}")
+        div(class="testName mui-col-sm-6", title="#{test.title}}")
+            div(class="indent", style="margin-left:#{indent}px;")= test.title
+
+        div(class="testDuration mui-col-sm-2")= (test.duration || 0).toFixed(2)
+        case test.status
+            when 2: div(class="testStatus mui-col-sm-2 mui-col-sm-offset-2") -
+            when 1: div(class="testStatus mui-col-sm-4") ✓
+            default: div(class="testStatus mui-col-sm-3 mui-col-sm-offset-1") ✗
+
+        if (test.error && Object.keys(test.error).length > 0)
+            div(class="testErr mui-col-sm-10 mui-col-sm-offset-1")
+                pre= test.error.stack.replace('<','&lt;')
+
+mixin buildSuite(suite, indent)
+    - var passes = suite.stats.tests - suite.stats.failures - suite.stats.pending
+    div(class="suite #{suite.stats.failures ? 'failed' : ''} #{indent === 0 ? 'expanded' : ''}")
+        div(class="suiteDetails mui-row mui-text-caption")
+            div(class="suiteName mui-col-sm-6 mui-text-body1" title="#{suite.title}")
+                div(class="#{indent > 0 ? 'indent' : ''}" style="margin-left:#{indent}px;")
+                    if suite.file
+                        i(class="fa fa-file-o", title="#{suite.file}")
+                    | #{suite.title}
+            div(class="suiteDuration mui-col-sm-2")
+                div(class="left-half")= suite.stats.duration.toFixed(2)
+                div(class="right-half")
+                    if indent > 0
+                        | (#{(suite.stats.duration / results.stats.duration * 100).toFixed(2)}%)
+            div(class="suitePasses mui-col-sm-1 passed")
+                if passes
+                    div(class="left-half")= passes
+                    div(class="right-half") (#{(passes / suite.stats.tests * 100).toFixed(2)}%)
+            div(class="suiteFailures mui-col-sm-1 failed")
+                if suite.stats.failures
+                    div(class="left-half")= suite.stats.failures
+                    div(class="right-half") (#{(suite.stats.failures / suite.stats.tests * 100).toFixed(2)}%)
+            div(class="suitePending mui-col-sm-1 pending")
+                if suite.stats.pending
+                    div(class="left-half")= suite.stats.pending
+                    div(class="right-half") (#{(suite.stats.pending / suite.stats.tests * 100).toFixed(2)}%)
+            div(class="suiteTotal mui-col-sm-1")
+                if suite.stats.tests
+                    div(class="left-half")= suite.stats.tests
+                    div(class="right-half") (#{(suite.stats.tests / results.stats.tests * 100).toFixed(2)}%)
+        if suite.tests.length > 0
+            div(class="testList")
+                each childTest, index in suite.tests
+                    +buildTest(childTest, indent+15, (index === suite.tests.length - 1))
+        if suite.suites.length > 0
+            div(class="suiteList")
+                each childSuite, index in suite.suites
+                    +buildSuite(childSuite, indent+15, (index === suite.suites.length - 1))
+
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=0.8")
+        title Report Test Results
+        link(href="https://cdn.muicss.com/mui-0.1.22-rc1/css/mui.min.css", rel="stylesheet", type="text/css")
+        link(href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css", rel="stylesheet", type="text/css")
+        script(src="https://cdn.muicss.com/mui-0.1.22-rc1/js/mui.min.js")
+        style(type="text/css").
+            div.test > div, div.suiteDetails > div {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                line-height: 2em;
+            }
+            div.passed {
+                color: #66BB6A;
+            }
+            div.pending {
+                color: #29B6F6;
+            }
+            div.failed {
+                color: #FF7043;
+            }
+            span.failed {
+                font-weight: bold;
+                color: #FF7043;
+            }
+            div.suite, div.testList {
+                border-top: 1px dotted #B2DFDB;
+            }
+            div.testList {
+                background-color: #FAFAFA;
+            }
+            body {
+                background-color: #EEEEEE;
+            }
+            div.suiteHeaders {
+                color: white;
+                background-color: #26A69A;
+                text-align: center;
+            }
+            div.suiteHeaders div.suiteName {
+                text-align: left;
+            }
+            div.testErr {
+                background-color: #FFFFFF;
+                color: black;
+                font-family: 'monospace';
+                font-size: 10px;
+                border: 1px dotted #BDBDBD;
+            }
+            div > .suiteList,
+            div > .testList,
+            div > .testErr {
+                display:none;
+            }
+
+            div.suite.failed > div.suiteDetails > div.suiteName,
+            div.test.failed > div.testName {
+                color: #FF7043;
+            }
+
+            div.expanded > .suiteList,
+            div.expanded > .testList,
+            div.expanded > .testErr {
+                display:block;
+            }
+
+            div.suiteAction {
+                font-weight: normal;
+                font-size: 10pt;
+            }
+            div.suiteDetails > div {
+                font-weight: bold;
+            }
+
+            div.suite,
+            div.test {
+                cursor: pointer;
+            }
+
+            div.indent {
+                position: relative;
+            }
+            div.indent::before,
+            div.indent::after {
+                content: "";
+                position: absolute;
+                left: -12px;
+            }
+            div.indent::before {
+                border-top: 1px solid #000;
+                top: 60%;
+                width: 10px;
+                height: 0;
+            }
+            div.indent::after {
+                border-left: 1px solid #000;
+                height: 50%;
+                width: 0px;
+                top: 10%;
+            }
+
+            div.hide {
+                display: none !important;
+            }
+
+            div.right-half, div.left-half {
+                float:left;
+                width:45%;
+                padding-left:5%;
+            }
+            div.left-half {
+                text-align:right;
+            }
+            div.right-half {
+                color: #000000;
+            }
+
+            div.suiteDetails:hover {
+                background-color: #E8F5E9
+            }
+
+body
+    small
+        div(id="reportTree", class="mui-panel mui-text-body1 expanded")
+
+
+        div(class="suiteList")
+            div(class="suiteHeaders mui-row mui-text-title mui-z1")
+                div(class="suiteName mui-col-sm-2") Title
+                div(class="suiteAction mui-col-sm-2")
+                    input(type="checkbox", id="expandAll")
+                    | Automatically expand?
+                div(class="suiteAction mui-col-sm-2")
+                    input(type="checkbox", id="filterFailed")
+                    | Only show failures?
+                div(class="suiteDuration mui-col-sm-2") Time(secs)
+                div(class="suitePasses mui-col-sm-1") Pass
+                div(class="suiteFailures mui-col-sm-1") Fail
+                div(class="suitePending mui-col-sm-1") Pend
+                div(class="suiteTotal mui-col-sm-1") Total
+
+            +buildSuite(results, 0)
+
+script.
+    (function () {
+        var index = 0;
+        var expandAllInput = document.getElementById('expandAll');
+        var filterFailedInput = document.getElementById('filterFailed');
+
+        var suites = document.getElementsByClassName('suite');
+        var tests = document.getElementsByClassName('test');
+
+        var all = document.querySelectorAll('div.test, div.suite');
+        var failures = document.querySelectorAll('div.test.failed, div.suite.failed');
+
+        var toggleExpanded = function(event) {
+            event = event || window.event;
+            var target = event.currentTarget || this;
+
+            target.classList.toggle('expanded');
+
+            if (event.stopPropagation) {
+                event.stopPropagation();
+            } else {
+                event.cancelBubble = true;
+            }
+
+        };
+
+        var expandAll = function(event) {
+            if (expandAllInput.checked) {
+                for(index = 0; index < suites.length; index++) {
+                    suites[index].classList.add('expanded');
+                }
+            }
+            else {
+                for(index = 0; index < suites.length; index++) {
+                    suites[index].classList.remove('expanded');
+                }
+            }
+        };
+
+        var filterFailed = function(event) {
+            if (filterFailedInput.checked) {
+                for(index = 0; index < all.length; index++) {
+                    all[index].classList.add('hide');
+                }
+                for(index = 0; index < failures.length; index++) {
+                    failures[index].classList.remove('hide');
+                }
+                console.log('blah');
+            }
+            else {
+                for(index = 0; index < all.length; index++) {
+                    all[index].classList.remove('hide');
+                }
+            }
+
+        };
+
+        var expandToId = function(id) {
+            var element = document.getElementById(id);
+            element.classList.add('expanded');
+            while(element = element.parentNode) {
+                if (element.classList.contains('test') || element.classList.contains('suite')) {
+                    element.classList.add('expanded');
+                }
+            }
+        };
+
+        for(index = 0; index < suites.length; index++) {
+            suites[index].addEventListener('click', toggleExpanded);
+        }
+
+        for(index = 0; index < tests.length; index++) {
+            tests[index].addEventListener('click', toggleExpanded);
+        }
+
+        expandAllInput.addEventListener('change', expandAll);
+        filterFailedInput.addEventListener('change', filterFailed);
+
+        if(document.location.hash) {
+            var id = document.location.hash.slice(1);
+            expandToId(id);
+        }
+    })();

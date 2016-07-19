@@ -7,7 +7,7 @@ import Test from '../src/classes/test';
 
 describe('Index file', () => {
     let Spectreport, readFileSync, writeFileSync,
-        dot, dotRender, aggregator, aggregatorScan;
+        jade, aggregator, aggregatorScan;
 
     class AggregatorMock {
         constructor() {
@@ -21,8 +21,7 @@ describe('Index file', () => {
     before(() => {
         readFileSync = sinon.stub();
         writeFileSync = sinon.stub();
-        dotRender = sinon.stub();
-        dot = sinon.stub();
+        jade = sinon.stub();
 
         aggregator = sinon.spy();
         aggregatorScan = sinon.stub();
@@ -33,8 +32,8 @@ describe('Index file', () => {
                 'readFileSync': readFileSync,
                 'writeFileSync': writeFileSync
             },
-            'dot': {
-                'template': dot
+            'jade': {
+                'renderFile': jade
             },
             './classes/aggregator': AggregatorMock
         });
@@ -130,13 +129,9 @@ describe('Index file', () => {
             readFileSync.resetBehavior();
             readFileSync.returns('template');
 
-            dot.reset();
-            dot.resetBehavior();
-            dot.returns(dotRender);
-
-            dotRender.reset();
-            dotRender.resetBehavior();
-            dotRender.returns('rendered');
+            jade.reset();
+            jade.resetBehavior();
+            jade.returns('rendered');
         });
 
         it('should call scan when there are no results', () => {
@@ -144,22 +139,15 @@ describe('Index file', () => {
             expect(scan).to.have.been.calledOnce;
         });
 
-        it('should read the template file', () => {
-            spectreport.report();
-            expect(readFileSync).to.have.been.calledOnce;
-            expect(readFileSync).to.have.been.calledWith(f.indexDefaults.template);
-        });
+        it('should invoke the jade template renderer', () => {
+            let jadeOptions = {
+                pretty: true,
+                results: f.suite
+            };
 
-        it('should invoke the dot template renderer', () => {
             spectreport.report();
-            expect(dot).to.have.been.calledOnce;
-            expect(dot).to.have.been.calledWith('template');
-        });
-
-        it('should render the template', () => {
-            spectreport.report();
-            expect(dotRender).to.have.been.calledOnce;
-            expect(dotRender).to.have.been.calledWith(f.suite);
+            expect(jade).to.have.been.calledOnce;
+            expect(jade).to.have.been.calledWith(f.indexDefaults.template, jadeOptions);
         });
 
         it('should populate the reportHtml property', () => {
@@ -168,21 +156,9 @@ describe('Index file', () => {
             expect(spectreport.reportHtml).to.eql('rendered');
         });
 
-        it('should throw error when the template file cannot be read', () => {
-            let errMsg = 'File Not Found';
-            readFileSync.throws(new Error(errMsg));
-            expect(spectreport.report.bind(spectreport)).to.throw(f.renderReportError + errMsg);
-        });
-
-        it('should throw error when the dot renderer fails', () => {
+        it('should throw error when the jade renderer fails', () => {
             let errMsg = 'Rendering Failed';
-            dot.throws(new Error(errMsg));
-            expect(spectreport.report.bind(spectreport)).to.throw(f.renderReportError + errMsg);
-        });
-
-        it('should throw error when the template cannot be rendered', () => {
-            let errMsg = 'Runtime Error';
-            dotRender.throws(new Error(errMsg));
+            jade.throws(new Error(errMsg));
             expect(spectreport.report.bind(spectreport)).to.throw(f.renderReportError + errMsg);
         });
     });

@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const dot = require('dot');
+const jade = require('jade');
 const path = require('path');
 
 import Aggregator from './classes/aggregator';
@@ -7,7 +7,7 @@ import Aggregator from './classes/aggregator';
 const defaults = {
     outputHtml: 'test/results/index.html',
     jsonDir: 'test/results',
-    template: path.join(path.relative('.', __dirname), 'assets/results.dot'),
+    template: path.join(path.relative('.', __dirname), 'assets/results.jade'),
     suiteTitle: 'Test Results'
 };
 
@@ -41,9 +41,7 @@ class Spectreport {
         }
 
         try {
-            let tpl = fs.readFileSync(this.opts.template);
-            let render = dot.template(tpl);
-            this.reportHtml = render(this.results);
+            this.reportHtml = jade.renderFile(this.opts.template, { pretty: true, results: this.results });
         } catch (ex) {
             ex.message = 'There was a problem rendering the HTML report.\n' + ex.message;
             throw ex;

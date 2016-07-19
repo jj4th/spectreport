@@ -27,6 +27,7 @@ const testPath          = 'test/**/*.spec.js';
 const srcPluginPath     = 'plugins/**/*.plugin.js';
 const testPluginPath    = 'plugins/**/*.spec.js';
 const setupPath         = 'test/setup/node.js';
+const watchPath         = [srcPath, 'src/assets/*', 'test/**/*.js'];
 
 function test() {
   return gulp.src([setupPath, testPath, testPluginPath], {read: false})
@@ -89,7 +90,7 @@ gulp.task('build', ['lint:src', 'clean', 'assets', 'plugins'], function(done) {
   mkdirp.sync(destinationFolder);
   rollup.rollup({
     entry: config.entryFileName + '.js',
-    external: ['dot', 'fs-extra', 'babel-runtime']
+    external: ['jade', 'fs-extra', 'babel-runtime']
   }).then(function(bundle) {
     var res = bundle.generate({
       sourceMap: 'inline',
@@ -146,3 +147,9 @@ gulp.task('demo', ['build'], function (done) {
 
 // An alias of test
 gulp.task('default', ['test']);
+
+// Watcher
+gulp.task('watch', function () {
+  return gulp.watch(watchPath, ['coverage', 'build']);
+});
+
