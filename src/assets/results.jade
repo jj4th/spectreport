@@ -282,8 +282,8 @@ script.
         expandAllInput.addEventListener('change', expandAll);
         filterFailedInput.addEventListener('change', filterFailed);
 
-        if(document.location.hash) {
-            var id = document.location.hash.slice(1);
+        if(window.top.document.location.hash) {
+            var id = window.top.document.location.hash.slice(1);
             expandToId(id);
         }
     })();
