@@ -137,12 +137,32 @@ gulp.task('mocha', function() {
 });
 
 // Make demo
-gulp.task('demo', ['build'], function (done) {
-  exec('spectreport -j test/setup/fixtures -o ./demo/index.html', function (err, stdout, stderr) {
+gulp.task('demo', ['build', 'demo:frameset', 'demo:serve', 'demo:watch'], function (done) {
+  exec('spectreport -j test/setup/fixtures -o ./demo/test.html', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     done(err);
   });
+});
+
+// Many CI/CD projects use a frameset, so we want to run our demo in a frameset
+gulp.task('demo:frameset', function (done) {
+  var frameset = '<style type="text/css"> body { margin: 0; padding: 0; }' +
+    '.frame { display: block; width: 100vw; height: 100vh; max-width: 100%;' +
+    '  margin: 0; padding: 0; border: 0 none; box-sizing: border-box; }' +
+    '</style><iframe src="./test.html" class="frame" />';
+  fs.writeFile('./demo/index.html', frameset, done);
+});
+
+gulp.task('demo:serve', function () {
+  $.connect.server({
+    root: 'demo',
+    livereload: true
+  });
+});
+
+gulp.task('demo:watch', function () {
+  return gulp.watch(watchPath, ['demo']);
 });
 
 // An alias of test
@@ -152,4 +172,3 @@ gulp.task('default', ['test']);
 gulp.task('watch', function () {
   return gulp.watch(watchPath, ['coverage', 'build']);
 });
-

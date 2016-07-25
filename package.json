@@ -38,6 +38,7 @@
     "gulp": "3.9.0",
     "gulp-babel": "^5.2.1",
     "gulp-concat": "^2.5.2",
+    "gulp-connect": "^4.2.0",
     "gulp-eslint": "^0.7.0",
     "gulp-file": "^0.2.0",
     "gulp-filter": "^2.0.2",

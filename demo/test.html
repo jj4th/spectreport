@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <title>Report Test Results</title>
+    <link href="https://cdn.muicss.com/mui-0.1.22-rc1/css/mui.min.css" rel="stylesheet" type="text/css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.muicss.com/mui-0.1.22-rc1/js/mui.min.js"></script>
+    <style type="text/css">
+      div.test > div, div.suiteDetails > div {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          line-height: 2em;
+      }
+      div.passed {
+          color: #66BB6A;
+      }
+      div.pending {
+          color: #29B6F6;
+      }
+      div.failed {
+          color: #FF7043;
+      }
+      span.failed {
+          font-weight: bold;
+          color: #FF7043;
+      }
+      div.suite, div.testList {
+          border-top: 1px dotted #B2DFDB;
+      }
+      div.testList {
+          background-color: #FAFAFA;
+      }
+      body {
+          background-color: #EEEEEE;
+      }
+      div.suiteHeaders {
+          color: white;
+          background-color: #26A69A;
+          text-align: center;
+      }
+      div.suiteHeaders div.suiteName {
+          text-align: left;
+      }
+      div.testErr {
+          background-color: #FFFFFF;
+          color: black;
+          font-family: 'monospace';
+          font-size: 10px;
+          border: 1px dotted #BDBDBD;
+      }
+      div > .suiteList,
+      div > .testList,
+      div > .testErr {
+          display:none;
+      }
+      
+      div.suite.failed > div.suiteDetails > div.suiteName,
+      div.test.failed > div.testName {
+          color: #FF7043;
+      }
+      
+      div.expanded > .suiteList,
+      div.expanded > .testList,
+      div.expanded > .testErr {
+          display:block;
+      }
+      
+      div.suiteAction {
+          font-weight: normal;
+          font-size: 10pt;
+      }
+      div.suiteDetails > div {
+          font-weight: bold;
+      }
+      
+      div.suite,
+      div.test {
+          cursor: pointer;
+      }
+      
+      div.indent {
+          position: relative;
+      }
+      div.indent::before,
+      div.indent::after {
+          content: "";
+          position: absolute;
+          left: -12px;
+      }
+      div.indent::before {
+          border-top: 1px solid #000;
+          top: 60%;
+          width: 10px;
+          height: 0;
+      }
+      div.indent::after {
+          border-left: 1px solid #000;
+          height: 50%;
+          width: 0px;
+          top: 10%;
+      }
+      
+      div.hide {
+          display: none !important;
+      }
+      
+      div.right-half, div.left-half {
+          float:left;
+          width:45%;
+          padding-left:5%;
+      }
+      div.left-half {
+          text-align:right;
+      }
+      div.right-half {
+          color: #000000;
+      }
+      
+      div.suiteDetails:hover {
+          background-color: #E8F5E9
+      }
+      
+    </style>
+  </head>
+</html>
+<body><small>
+    <div id="reportTree" class="mui-panel mui-text-body1 expanded"></div>
+    <div class="suiteList">
+      <div class="suiteHeaders mui-row mui-text-title mui-z1">
+        <div class="suiteName mui-col-sm-2">Title</div>
+        <div class="suiteAction mui-col-sm-2">
+          <input type="checkbox" id="expandAll">Automatically expand?
+        </div>
+        <div class="suiteAction mui-col-sm-2">
+          <input type="checkbox" id="filterFailed">Only show failures?
+        </div>
+        <div class="suiteDuration mui-col-sm-2">Time(secs)</div>
+        <div class="suitePasses mui-col-sm-1">Pass</div>
+        <div class="suiteFailures mui-col-sm-1">Fail</div>
+        <div class="suitePending mui-col-sm-1">Pend</div>
+        <div class="suiteTotal mui-col-sm-1">Total</div>
+      </div>
+      <div class="suite failed expanded">
+        <div class="suiteDetails mui-row mui-text-caption">
+          <div title="Test Results" class="suiteName mui-col-sm-6 mui-text-body1">
+            <div style="margin-left:0px;">Test Results
+            </div>
+          </div>
+          <div class="suiteDuration mui-col-sm-2">
+            <div class="left-half">125.00</div>
+            <div class="right-half">
+            </div>
+          </div>
+          <div class="suitePasses mui-col-sm-1 passed">
+            <div class="left-half">9</div>
+            <div class="right-half">(90.00%)</div>
+          </div>
+          <div class="suiteFailures mui-col-sm-1 failed">
+            <div class="left-half">1</div>
+            <div class="right-half">(10.00%)</div>
+          </div>
+          <div class="suitePending mui-col-sm-1 pending">
+          </div>
+          <div class="suiteTotal mui-col-sm-1">
+            <div class="left-half">10</div>
+            <div class="right-half">(100.00%)</div>
+          </div>
+        </div>
+        <div class="suiteList">
+          <div class="suite  ">
+            <div class="suiteDetails mui-row mui-text-caption">
+              <div title="Suite-1" class="suiteName mui-col-sm-6 mui-text-body1">
+                <div style="margin-left:15px;" class="indent">Suite-1
+                </div>
+              </div>
+              <div class="suiteDuration mui-col-sm-2">
+                <div class="left-half">15.00</div>
+                <div class="right-half">(12.00%)
+                </div>
+              </div>
+              <div class="suitePasses mui-col-sm-1 passed">
+                <div class="left-half">2</div>
+                <div class="right-half">(100.00%)</div>
+              </div>
+              <div class="suiteFailures mui-col-sm-1 failed">
+              </div>
+              <div class="suitePending mui-col-sm-1 pending">
+              </div>
+              <div class="suiteTotal mui-col-sm-1">
+                <div class="left-half">2</div>
+                <div class="right-half">(20.00%)</div>
+              </div>
+            </div>
+            <div class="testList">
+              <div id="92f185a5001ca8a659081ed2b36825964fef0915" class="mui-row test mui-text-caption failed">
+                <div title="Test-2}" class="testName mui-col-sm-6">
+                  <div style="margin-left:30px;" class="indent">Test-2</div>
+                </div>
+                <div class="testDuration mui-col-sm-2">10.00</div>
+                <div class="testStatus mui-col-sm-4">✓</div>
+              </div>
+            </div>
+            <div class="suiteList">
+              <div class="suite  ">
+                <div class="suiteDetails mui-row mui-text-caption">
+                  <div title="Child-1" class="suiteName mui-col-sm-6 mui-text-body1">
+                    <div style="margin-left:30px;" class="indent">Child-1
+                    </div>
+                  </div>
+                  <div class="suiteDuration mui-col-sm-2">
+                    <div class="left-half">5.00</div>
+                    <div class="right-half">(4.00%)
+                    </div>
+                  </div>
+                  <div class="suitePasses mui-col-sm-1 passed">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(100.00%)</div>
+                  </div>
+                  <div class="suiteFailures mui-col-sm-1 failed">
+                  </div>
+                  <div class="suitePending mui-col-sm-1 pending">
+                  </div>
+                  <div class="suiteTotal mui-col-sm-1">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(10.00%)</div>
+                  </div>
+                </div>
+                <div class="testList">
+                  <div id="6d4d3d19e97b65c3224d8747efc944b560473e14" class="mui-row test mui-text-caption failed">
+                    <div title="Test-1}" class="testName mui-col-sm-6">
+                      <div style="margin-left:45px;" class="indent">Test-1</div>
+                    </div>
+                    <div class="testDuration mui-col-sm-2">5.00</div>
+                    <div class="testStatus mui-col-sm-4">✓</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="suite  ">
+            <div class="suiteDetails mui-row mui-text-caption">
+              <div title="Suite-2" class="suiteName mui-col-sm-6 mui-text-body1">
+                <div style="margin-left:15px;" class="indent">Suite-2
+                </div>
+              </div>
+              <div class="suiteDuration mui-col-sm-2">
+                <div class="left-half">20.00</div>
+                <div class="right-half">(16.00%)
+                </div>
+              </div>
+              <div class="suitePasses mui-col-sm-1 passed">
+                <div class="left-half">2</div>
+                <div class="right-half">(100.00%)</div>
+              </div>
+              <div class="suiteFailures mui-col-sm-1 failed">
+              </div>
+              <div class="suitePending mui-col-sm-1 pending">
+              </div>
+              <div class="suiteTotal mui-col-sm-1">
+                <div class="left-half">2</div>
+                <div class="right-half">(20.00%)</div>
+              </div>
+            </div>
+            <div class="testList">
+              <div id="3bf17219600dd48a97fb9d2af2baf771a85d64ce" class="mui-row test mui-text-caption failed">
+                <div title="Test-4}" class="testName mui-col-sm-6">
+                  <div style="margin-left:30px;" class="indent">Test-4</div>
+                </div>
+                <div class="testDuration mui-col-sm-2">10.00</div>
+                <div class="testStatus mui-col-sm-4">✓</div>
+              </div>
+            </div>
+            <div class="suiteList">
+              <div class="suite  ">
+                <div class="suiteDetails mui-row mui-text-caption">
+                  <div title="Child-2" class="suiteName mui-col-sm-6 mui-text-body1">
+                    <div style="margin-left:30px;" class="indent">Child-2
+                    </div>
+                  </div>
+                  <div class="suiteDuration mui-col-sm-2">
+                    <div class="left-half">10.00</div>
+                    <div class="right-half">(8.00%)
+                    </div>
+                  </div>
+                  <div class="suitePasses mui-col-sm-1 passed">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(100.00%)</div>
+                  </div>
+                  <div class="suiteFailures mui-col-sm-1 failed">
+                  </div>
+                  <div class="suitePending mui-col-sm-1 pending">
+                  </div>
+                  <div class="suiteTotal mui-col-sm-1">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(10.00%)</div>
+                  </div>
+                </div>
+                <div class="testList">
+                  <div id="a73f1389e28afd6b4fb5028d855b7fddbe5bc7a1" class="mui-row test mui-text-caption failed">
+                    <div title="Test-3}" class="testName mui-col-sm-6">
+                      <div style="margin-left:45px;" class="indent">Test-3</div>
+                    </div>
+                    <div class="testDuration mui-col-sm-2">10.00</div>
+                    <div class="testStatus mui-col-sm-4">✓</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="suite  ">
+            <div class="suiteDetails mui-row mui-text-caption">
+              <div title="Suite-3" class="suiteName mui-col-sm-6 mui-text-body1">
+                <div style="margin-left:15px;" class="indent">Suite-3
+                </div>
+              </div>
+              <div class="suiteDuration mui-col-sm-2">
+                <div class="left-half">40.00</div>
+                <div class="right-half">(32.00%)
+                </div>
+              </div>
+              <div class="suitePasses mui-col-sm-1 passed">
+                <div class="left-half">2</div>
+                <div class="right-half">(100.00%)</div>
+              </div>
+              <div class="suiteFailures mui-col-sm-1 failed">
+              </div>
+              <div class="suitePending mui-col-sm-1 pending">
+              </div>
+              <div class="suiteTotal mui-col-sm-1">
+                <div class="left-half">2</div>
+                <div class="right-half">(20.00%)</div>
+              </div>
+            </div>
+            <div class="testList">
+              <div id="cc231a79b7018a6dea724637dd9f8dffd9a98884" class="mui-row test mui-text-caption failed">
+                <div title="Test-6}" class="testName mui-col-sm-6">
+                  <div style="margin-left:30px;" class="indent">Test-6</div>
+                </div>
+                <div class="testDuration mui-col-sm-2">25.00</div>
+                <div class="testStatus mui-col-sm-4">✓</div>
+              </div>
+            </div>
+            <div class="suiteList">
+              <div class="suite  ">
+                <div class="suiteDetails mui-row mui-text-caption">
+                  <div title="Child-3" class="suiteName mui-col-sm-6 mui-text-body1">
+                    <div style="margin-left:30px;" class="indent">Child-3
+                    </div>
+                  </div>
+                  <div class="suiteDuration mui-col-sm-2">
+                    <div class="left-half">15.00</div>
+                    <div class="right-half">(12.00%)
+                    </div>
+                  </div>
+                  <div class="suitePasses mui-col-sm-1 passed">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(100.00%)</div>
+                  </div>
+                  <div class="suiteFailures mui-col-sm-1 failed">
+                  </div>
+                  <div class="suitePending mui-col-sm-1 pending">
+                  </div>
+                  <div class="suiteTotal mui-col-sm-1">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(10.00%)</div>
+                  </div>
+                </div>
+                <div class="testList">
+                  <div id="a69321dded848ffa12394e1a57eb655fb760afbe" class="mui-row test mui-text-caption failed">
+                    <div title="Test-5}" class="testName mui-col-sm-6">
+                      <div style="margin-left:45px;" class="indent">Test-5</div>
+                    </div>
+                    <div class="testDuration mui-col-sm-2">15.00</div>
+                    <div class="testStatus mui-col-sm-4">✓</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="suite  ">
+            <div class="suiteDetails mui-row mui-text-caption">
+              <div title="Suite-4" class="suiteName mui-col-sm-6 mui-text-body1">
+                <div style="margin-left:15px;" class="indent">Suite-4
+                </div>
+              </div>
+              <div class="suiteDuration mui-col-sm-2">
+                <div class="left-half">25.00</div>
+                <div class="right-half">(20.00%)
+                </div>
+              </div>
+              <div class="suitePasses mui-col-sm-1 passed">
+                <div class="left-half">2</div>
+                <div class="right-half">(100.00%)</div>
+              </div>
+              <div class="suiteFailures mui-col-sm-1 failed">
+              </div>
+              <div class="suitePending mui-col-sm-1 pending">
+              </div>
+              <div class="suiteTotal mui-col-sm-1">
+                <div class="left-half">2</div>
+                <div class="right-half">(20.00%)</div>
+              </div>
+            </div>
+            <div class="testList">
+              <div id="d4de5a7e5bed7a8a61a6467dbc76c1046cbcabda" class="mui-row test mui-text-caption failed">
+                <div title="Test-8}" class="testName mui-col-sm-6">
+                  <div style="margin-left:30px;" class="indent">Test-8</div>
+                </div>
+                <div class="testDuration mui-col-sm-2">10.00</div>
+                <div class="testStatus mui-col-sm-4">✓</div>
+              </div>
+            </div>
+            <div class="suiteList">
+              <div class="suite  ">
+                <div class="suiteDetails mui-row mui-text-caption">
+                  <div title="Child-4" class="suiteName mui-col-sm-6 mui-text-body1">
+                    <div style="margin-left:30px;" class="indent">Child-4
+                    </div>
+                  </div>
+                  <div class="suiteDuration mui-col-sm-2">
+                    <div class="left-half">15.00</div>
+                    <div class="right-half">(12.00%)
+                    </div>
+                  </div>
+                  <div class="suitePasses mui-col-sm-1 passed">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(100.00%)</div>
+                  </div>
+                  <div class="suiteFailures mui-col-sm-1 failed">
+                  </div>
+                  <div class="suitePending mui-col-sm-1 pending">
+                  </div>
+                  <div class="suiteTotal mui-col-sm-1">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(10.00%)</div>
+                  </div>
+                </div>
+                <div class="testList">
+                  <div id="f8b5acf0caa581534f11e5ab96f59329afe02e47" class="mui-row test mui-text-caption failed">
+                    <div title="Test-7}" class="testName mui-col-sm-6">
+                      <div style="margin-left:45px;" class="indent">Test-7</div>
+                    </div>
+                    <div class="testDuration mui-col-sm-2">15.00</div>
+                    <div class="testStatus mui-col-sm-4">✓</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="suite failed ">
+            <div class="suiteDetails mui-row mui-text-caption">
+              <div title="Suite-5" class="suiteName mui-col-sm-6 mui-text-body1">
+                <div style="margin-left:15px;" class="indent">Suite-5
+                </div>
+              </div>
+              <div class="suiteDuration mui-col-sm-2">
+                <div class="left-half">25.00</div>
+                <div class="right-half">(20.00%)
+                </div>
+              </div>
+              <div class="suitePasses mui-col-sm-1 passed">
+                <div class="left-half">1</div>
+                <div class="right-half">(50.00%)</div>
+              </div>
+              <div class="suiteFailures mui-col-sm-1 failed">
+                <div class="left-half">1</div>
+                <div class="right-half">(50.00%)</div>
+              </div>
+              <div class="suitePending mui-col-sm-1 pending">
+              </div>
+              <div class="suiteTotal mui-col-sm-1">
+                <div class="left-half">2</div>
+                <div class="right-half">(20.00%)</div>
+              </div>
+            </div>
+            <div class="testList">
+              <div id="3ef02afe6e8071995aa7f81f9f0c5a20f553f15a" class="mui-row test mui-text-caption failed">
+                <div title="Should not be Test-10}" class="testName mui-col-sm-6">
+                  <div style="margin-left:30px;" class="indent">Should not be Test-10</div>
+                </div>
+                <div class="testDuration mui-col-sm-2">5.00</div>
+                <div class="testStatus mui-col-sm-4">✓</div>
+              </div>
+            </div>
+            <div class="suiteList">
+              <div class="suite failed ">
+                <div class="suiteDetails mui-row mui-text-caption">
+                  <div title="Child-5" class="suiteName mui-col-sm-6 mui-text-body1">
+                    <div style="margin-left:30px;" class="indent">Child-5
+                    </div>
+                  </div>
+                  <div class="suiteDuration mui-col-sm-2">
+                    <div class="left-half">20.00</div>
+                    <div class="right-half">(16.00%)
+                    </div>
+                  </div>
+                  <div class="suitePasses mui-col-sm-1 passed">
+                  </div>
+                  <div class="suiteFailures mui-col-sm-1 failed">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(100.00%)</div>
+                  </div>
+                  <div class="suitePending mui-col-sm-1 pending">
+                  </div>
+                  <div class="suiteTotal mui-col-sm-1">
+                    <div class="left-half">1</div>
+                    <div class="right-half">(10.00%)</div>
+                  </div>
+                </div>
+                <div class="testList">
+                  <div id="bdefb78a0829751a23526c2f95a5bb7ebdba9ee4" class="mui-row test mui-text-caption failed">
+                    <div title="Should be Test-9}" class="testName mui-col-sm-6">
+                      <div style="margin-left:45px;" class="indent">Should be Test-9</div>
+                    </div>
+                    <div class="testDuration mui-col-sm-2">20.00</div>
+                    <div class="testStatus mui-col-sm-3 mui-col-sm-offset-1">✗</div>
+                    <div class="testErr mui-col-sm-10 mui-col-sm-offset-1">
+                      <pre>There was an error!</pre>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div></small></body>
+<script>
+  (function () {
+      var index = 0;
+      var expandAllInput = document.getElementById('expandAll');
+      var filterFailedInput = document.getElementById('filterFailed');
+  
+      var suites = document.getElementsByClassName('suite');
+      var tests = document.getElementsByClassName('test');
+  
+      var all = document.querySelectorAll('div.test, div.suite');
+      var failures = document.querySelectorAll('div.test.failed, div.suite.failed');
+  
+      var toggleExpanded = function(event) {
+          event = event || window.event;
+          var target = event.currentTarget || this;
+  
+          target.classList.toggle('expanded');
+  
+          if (event.stopPropagation) {
+              event.stopPropagation();
+          } else {
+              event.cancelBubble = true;
+          }
+  
+      };
+  
+      var expandAll = function(event) {
+          if (expandAllInput.checked) {
+              for(index = 0; index < suites.length; index++) {
+                  suites[index].classList.add('expanded');
+              }
+          }
+          else {
+              for(index = 0; index < suites.length; index++) {
+                  suites[index].classList.remove('expanded');
+              }
+          }
+      };
+  
+      var filterFailed = function(event) {
+          if (filterFailedInput.checked) {
+              for(index = 0; index < all.length; index++) {
+                  all[index].classList.add('hide');
+              }
+              for(index = 0; index < failures.length; index++) {
+                  failures[index].classList.remove('hide');
+              }
+              console.log('blah');
+          }
+          else {
+              for(index = 0; index < all.length; index++) {
+                  all[index].classList.remove('hide');
+              }
+          }
+  
+      };
+  
+      var expandToId = function(id) {
+          var element = document.getElementById(id);
+          element.classList.add('expanded');
+          while(element = element.parentNode) {
+              if (element.classList.contains('test') || element.classList.contains('suite')) {
+                  element.classList.add('expanded');
+              }
+          }
+      };
+  
+      for(index = 0; index < suites.length; index++) {
+          suites[index].addEventListener('click', toggleExpanded);
+      }
+  
+      for(index = 0; index < tests.length; index++) {
+          tests[index].addEventListener('click', toggleExpanded);
+      }
+  
+      expandAllInput.addEventListener('change', expandAll);
+      filterFailedInput.addEventListener('change', filterFailed);
+  
+      if(window.top.document.location.hash) {
+          var id = window.top.document.location.hash.slice(1);
+          expandToId(id);
+      }
+  })();
+</script>
