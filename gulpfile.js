@@ -138,7 +138,7 @@ gulp.task('mocha', function() {
 
 // Make demo
 gulp.task('demo', ['build', 'demo:frameset', 'demo:serve', 'demo:watch'], function (done) {
-  exec('spectreport -j test/setup/fixtures -o ./demo/test.html', function (err, stdout, stderr) {
+  exec('./bin/spectreport -j test/setup/fixtures -o ./demo/test.html', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     done(err);

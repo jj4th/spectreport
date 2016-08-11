@@ -1,8 +1,8 @@
 
 mixin buildTest(test, indent)
     - var testClass = 'failed';
-    - if (test.status === 2) testclass = 'pending';
-    - if (test.status === 1) testclass = 'passed';
+    - if (test.status === 2) testClass = 'pending';
+    - if (test.status === 1) testClass = 'passed';
     div(class="mui-row test mui-text-caption #{testClass}", id="#{test.hash}")
         div(class="testName mui-col-sm-6", title="#{test.title}}")
             div(class="indent", style="margin-left:#{indent}px;")= test.title
