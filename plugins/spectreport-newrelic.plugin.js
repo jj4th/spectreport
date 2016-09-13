@@ -1,41 +1,42 @@
-var request = require('request');
+//var request = require('request');
 
 // Our newRelic reporting wants to track positive and negative test cases
 // heuristically, your mileage may vary.
-function countTestCharge(body, results) {
+
+function buildTestEvents(reporter, eventType, product, environment, body, results) {
     if (results.tests) {
         for (var i = 0; i < results.tests.length; i++) {
             var test = results.tests[i];
             var title = test.title.toLowerCase();
             if (title.indexOf('should not ') === 0) {
-                body.negativeTests++;
+                test.positive = false;
             } else if (title.indexOf('should ') === 0) {
-                body.positiveTests++;
+                test.positive = true;
             }
+
+            test.statusCode = test.status;
+            if (test.status === reporter.Test.TEST_FAIL) {
+                test.status = 'PASS';
+            } else if (test.status === reporter.Test.TEST_PENDING) {
+                test.status = 'PENDING';
+            } else {
+                test.status = 'FAIL';
+            }
+
+            test.eventType = eventType;
+            test.product = product;
+            test.environment = environment;
+
+            body.push(test);
         }
     }
+
     if (results.suites) {
         for (var j = 0; j < results.suites.length; j++) {
             var suite = results.suites[j];
-            countTestCharge(body, suite);
+            buildTestEvents(reporter, eventType, product, environment, body, suite);
         }
     }
-}
-
-function buildTestEvent(eventType, product, environment, summary, results) {
-    var body = {};
-    body.passingTests = summary.tests - (summary.pending + summary.failures);
-    body.failingTests = summary.failures;
-    body.pendingTests = summary.pending;
-    body.totalTests = summary.tests;
-    body.duration = summary.duration;
-    body.eventType = eventType;
-    body.product = product;
-    body.environment = environment;
-
-    body.positiveTests = body.negativeTests = 0;
-
-    countTestCharge(body, results);
 
     return body;
 }
@@ -59,7 +60,7 @@ function buildTestEvent(eventType, product, environment, summary, results) {
  *
  */
 function SpectreportNewRelic(options, reporter, done) {
-    var summary = reporter.summary();
+    //var summary = reporter.summary();
     var results = reporter.results;
     var insertKey = options.nrInsertKey;
     var collectorUrl = options.nrCollectorUrl;
@@ -74,19 +75,21 @@ function SpectreportNewRelic(options, reporter, done) {
             'Content-Type': 'application/json',
             'X-Insert-Key': insertKey
         },
-        json: buildTestEvent(eventType, product, environment, summary, results)
+        json: buildTestEvents(reporter, eventType, product, environment, [], results)
     };
 
-    request(post, function (error) {
-        if(error) {
-            throw new Error('NewRelic: Error while posting results\n' + error);
-        }
+    console.log(post);
+    // request(post, function (error) {
+    //     if(error) {
+    //         throw new Error('NewRelic: Error while posting results\n' + error);
+    //     }
 
-        if (!options.nrQuiet) {
-            console.log('NewRelic: Results reported to New Relic!');
-        }
-        done();
-    });
+    //     if (!options.nrQuiet) {
+    //         console.log('NewRelic: Results reported to New Relic!');
+    //     }
+    //     done();
+    // });
+    done();
 }
 
 SpectreportNewRelic.getUsage = function () {
